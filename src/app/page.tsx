@@ -1,30 +1,59 @@
 /* eslint-disable react-hooks/static-components */
+export const dynamic = "force-dynamic";
+
+import type { CSSProperties } from "react";
 import { allSections } from "contentlayer/generated";
 import { useMDXComponent } from "next-contentlayer/hooks";
 
 type SectionDoc = (typeof allSections)[number];
 
 const orderedSections = [...allSections].sort((a, b) => a.order - b.order);
+const heroImages = [
+  "/cover_random/hero1.png",
+  "/cover_random/hero2.png",
+  "/cover_random/hero3.png",
+  "/cover_random/hero4.png",
+  "/cover_random/hero5.png",
+  "/cover_random/hero6.png",
+  "/cover_random/hero7.png",
+  "/cover_random/hero8.png",
+  "/cover_random/hero9.png",
+  "/cover_random/hero10.png",
+  "/cover_random/hero11.png",
+  "/cover_random/hero12.png",
+  "/cover_random/hero13.png",
+  "/cover_random/hero14.png",
+] as const;
 
 function SectionBlock({ section }: { section: SectionDoc }) {
   const MDXContent = useMDXComponent(section.body.code);
   return (
-    <section className="content-section" id={section.slug}>
-      <h2>{section.title}</h2>
-      <div className="content-section__body">
-        <MDXContent />
+    <section className="content-section" id={section.slug} data-section={section.slug}>
+      <div className="content-section__inner">
+        <header className="content-section__header">
+          {section.summary ? <span className="content-section__badge">{section.summary}</span> : null}
+          <h2>{section.title}</h2>
+        </header>
+        <div className="content-section__surface">
+          <MDXContent />
+        </div>
       </div>
     </section>
   );
 }
 
 export default function Home() {
+  const heroArt = heroImages[Math.floor(Math.random() * heroImages.length)];
+  const heroCardStyle = {
+    "--hero-art": `url(${heroArt})`,
+  } as CSSProperties;
+
   return (
     <>
       <header className="site-header">
         <div className="showcase">
           <div className="showcase__glow" />
-          <div className="showcase__card">
+          <div className="showcase__card" style={heroCardStyle}>
             <div className="showcase__nav">
               <div className="showcase__brand">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -66,16 +95,6 @@ export default function Home() {
                   </a>
                   <a className="showcase__button showcase__button--ghost" href="#philosophy">
                     了解我们的理念
-                  </a>
-                </div>
-              </div>
-              <div className="showcase__visual">
-                <div className="showcase__visual-overlay" />
-                <div className="showcase__visual-inner">
-                  <h2>AI 赋能矩阵</h2>
-                  <p>以实验为驱动，串联教育、内容、创意与效率的多元场景，持续迭代业务价值。</p>
-                  <a href="#ai-products" className="showcase__visual-cta">
-                    查看服务概览
                   </a>
                 </div>
               </div>
