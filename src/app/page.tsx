@@ -9,10 +9,10 @@ export default function Home() {
               <div className="showcase__brand">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src="/xipilabs_green.png"
+                  src="/xipi-logo1.png"
                   alt="Xipi Labs"
-                  width={88}
-                  height={88}
+                  width={96}
+                  height={90}
                   loading="lazy"
                 />
                 <div className="showcase__brand-text">
