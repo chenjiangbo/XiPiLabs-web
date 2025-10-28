@@ -483,9 +483,9 @@ main {
 .content-section {
   --section-accent: #6dc8ff;
   --section-accent-soft: rgba(109, 200, 255, 0.14);
-  max-width: var(--max-width);
+  width: min(1280px, 100%);
   margin: clamp(52px, 7vw, 84px) auto 0;
-  padding: 0 clamp(16px, 3.6vw, 28px);
+  padding: 0 clamp(30px, 4.2vw, 48px);
 }
 
 .content-section[data-section="about"] {
