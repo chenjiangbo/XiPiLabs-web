@@ -55,7 +55,7 @@ a {
 .site-header {
   position: relative;
   min-height: 100vh;
-  padding: 110px 24px 140px;
+  padding: 92px 24px 128px;
   display: flex;
   align-items: center;
 }
@@ -80,10 +80,11 @@ a {
 .showcase__card {
   position: relative;
   border-radius: 42px;
-  padding: clamp(40px, 5vw, 60px);
+  padding: clamp(36px, 4.6vw, 54px);
   background: linear-gradient(140deg, rgba(20, 32, 52, 0.92), rgba(18, 25, 41, 0.88));
   box-shadow: 0 48px 120px rgba(6, 12, 24, 0.65);
   overflow: hidden;
+  margin-top: -32px;
 }
 
 .showcase__card::before {
@@ -203,30 +204,33 @@ a {
 }
 
 .showcase__eyebrow {
-  margin: 0 0 12px;
-  font-size: 15px;
+  margin: 0 0 10px;
+  font-size: 13px;
   text-transform: uppercase;
-  letter-spacing: 0.4em;
-  color: rgba(149, 197, 241, 0.75);
+  letter-spacing: 0.32em;
+  color: rgba(149, 197, 241, 0.7);
+  font-family: "Optima", "Segoe UI", "Helvetica Neue", sans-serif;
 }
 
 .showcase__title {
-  margin: 0 0 16px;
-  font-size: clamp(34px, 5vw, 56px);
+  margin: 0 0 14px;
+  font-size: clamp(30px, 4.2vw, 46px);
   font-weight: 600;
-  letter-spacing: -0.03em;
-  line-height: 1.08;
+  letter-spacing: -0.04em;
+  line-height: 1.05;
+  white-space: nowrap;
 }
 
 .showcase__title span {
-  display: block;
+  display: inline;
   color: #9fe2ff;
 }
 
 .showcase__lead {
-  margin: 0 0 24px;
-  font-size: clamp(16px, 2vw, 20px);
-  color: rgba(226, 233, 240, 0.82);
+  margin: 0 0 22px;
+  font-size: clamp(15px, 1.8vw, 18px);
+  color: rgba(226, 233, 240, 0.78);
+  max-width: 460px;
 }
 
 .showcase__actions {
@@ -239,9 +243,9 @@ a {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 12px 26px;
+  padding: 11px 22px;
   border-radius: 999px;
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 600;
   text-decoration: none;
   cursor: pointer;
@@ -313,14 +317,14 @@ a {
 
 .showcase__visual-inner h2 {
   margin: 0;
-  font-size: clamp(24px, 3.6vw, 32px);
+  font-size: clamp(22px, 3.2vw, 30px);
   font-weight: 600;
   letter-spacing: -0.01em;
 }
 
 .showcase__visual-inner p {
   margin: 0;
-  font-size: clamp(15px, 1.8vw, 17px);
+  font-size: clamp(14px, 1.6vw, 16px);
   color: rgba(9, 45, 60, 0.9);
 }
 
