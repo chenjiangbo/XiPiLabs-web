@@ -1,3 +1,23 @@
+/* eslint-disable react-hooks/static-components */
+import { allSections } from "contentlayer/generated";
+import { useMDXComponent } from "next-contentlayer/hooks";
+
+type SectionDoc = (typeof allSections)[number];
+
+const orderedSections = [...allSections].sort((a, b) => a.order - b.order);
+
+function SectionBlock({ section }: { section: SectionDoc }) {
+  const MDXContent = useMDXComponent(section.body.code);
+  return (
+    <section className="content-section" id={section.slug}>
+      <h2>{section.title}</h2>
+      <div className="content-section__body">
+        <MDXContent />
+      </div>
+    </section>
+  );
+}
+
 export default function Home() {
   return (
     <>
@@ -9,10 +29,10 @@ export default function Home() {
               <div className="showcase__brand">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src="/xipi-logo1.png"
+                  src="/xipi_log_notext.png"
                   alt="Xipi Labs"
-                  width={96}
-                  height={90}
+                  width={88}
+                  height={88}
                   loading="lazy"
                 />
                 <div className="showcase__brand-text">
@@ -22,8 +42,10 @@ export default function Home() {
               </div>
               <nav className="showcase__menu">
                 <a href="#">Home</a>
+                <a href="#about">关于我们</a>
                 <a href="#ai-products">AI 产品矩阵</a>
                 <a href="#philosophy">理念与文化</a>
+                <a href="#ai-education">AI 与教育</a>
                 <a href="#journal">实验室纪事</a>
                 <a href="#contact">联系我们</a>
               </nav>
@@ -31,12 +53,9 @@ export default function Home() {
 
             <div className="showcase__body">
               <div className="showcase__intro">
-                <p className="showcase__eyebrow">
-                  Designer · Developer · Innovator
-                </p>
+                <p className="showcase__eyebrow">Designer · Developer · Innovator</p>
                 <h1 className="showcase__title">
-                  用 AI 探索
-                  <span>创意与未来</span>
+                  用 AI 探索<span>创意与未来</span>
                 </h1>
                 <p className="showcase__lead">
                   希皮实验室（Xipi Labs）专注于构建实用、易用、富有创意的 AI 应用，赋能个人与企业的创造力。
@@ -54,9 +73,7 @@ export default function Home() {
                 <div className="showcase__visual-overlay" />
                 <div className="showcase__visual-inner">
                   <h2>AI 赋能矩阵</h2>
-                  <p>
-                    以实验为驱动，串联教育、内容、创意与效率的多元场景，持续迭代业务价值。
-                  </p>
+                  <p>以实验为驱动，串联教育、内容、创意与效率的多元场景，持续迭代业务价值。</p>
                   <a href="#ai-products" className="showcase__visual-cta">
                     查看服务概览
                   </a>
@@ -106,9 +123,7 @@ export default function Home() {
                   <p>
                     （规划中）面向开发者与创意团队的 AI 原型平台，提供可视化工作流、调试与导出能力，帮助创意快速落地。
                   </p>
-                  <span className="feature-card__cta feature-card__cta--disabled">
-                    敬请期待
-                  </span>
+                  <span className="feature-card__cta feature-card__cta--disabled">敬请期待</span>
                 </article>
                 <article className="feature-card feature-card--planned">
                   <div className="feature-card__badge">03</div>
@@ -121,9 +136,7 @@ export default function Home() {
                   <p>
                     （规划中）一键擦除照片中多余元素并智能填充背景，实现像素级无痕修复，告别复杂的后期处理。
                   </p>
-                  <span className="feature-card__cta feature-card__cta--disabled">
-                    敬请期待
-                  </span>
+                  <span className="feature-card__cta feature-card__cta--disabled">敬请期待</span>
                 </article>
               </div>
 
@@ -137,27 +150,9 @@ export default function Home() {
       </header>
 
       <main>
-        <section className="content-section" id="philosophy">
-          <h2>理念与文化</h2>
-          <p>
-            我们以“实验室”思维推动产品迭代：敢于验证前沿想法，也坚持让每一次创新切实服务真实场景。技术与设计在这里共创，数据反馈帮助我们持续优化体验。
-          </p>
-          <p>
-            下一步，我们会把理念拆解为“创意探索”“以人为本”“工程落地”三大支柱，并用真实案例与指标佐证，敬请期待完整内容更新。
-          </p>
-        </section>
-        <section className="content-section" id="journal">
-          <h2>实验室纪事</h2>
-          <p>
-            我们正在整理研发笔记、客户案例以及合作伙伴的真实声音。未来这里将记录希皮实验室的每一次灵感迸发与落地瞬间。
-          </p>
-        </section>
-        <section className="content-section" id="contact">
-          <h2>联系 CTA 占位</h2>
-          <p>
-            这里可以放置联系表单、CTA 按钮或其它交互组件。背景层使用 fixed 定位，不会随着内容滚动而失真。
-          </p>
-        </section>
+        {orderedSections.map((section) => (
+          <SectionBlock key={section._id} section={section} />
+        ))}
       </main>
     </>
   );

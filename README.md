@@ -34,3 +34,19 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+## Docker 部署
+
+构建镜像：
+
+```bash
+docker build -t xipilabs-web .
+```
+
+或使用 docker-compose：
+
+```bash
+docker compose up --build
+```
+
+镜像会先执行 `pnpm exec contentlayer build` 再 `pnpm build`，运行时直接 `pnpm start`，默认监听 3000 端口。

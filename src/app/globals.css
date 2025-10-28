@@ -55,7 +55,7 @@ a {
 .site-header {
   position: relative;
   min-height: 100vh;
-  padding: 92px 24px 128px;
+  padding: 84px 24px 120px;
   display: flex;
   align-items: center;
 }
@@ -80,11 +80,11 @@ a {
 .showcase__card {
   position: relative;
   border-radius: 42px;
-  padding: clamp(36px, 4.6vw, 54px);
+  padding: clamp(30px, 4.2vw, 48px);
   background: linear-gradient(140deg, rgba(20, 32, 52, 0.92), rgba(18, 25, 41, 0.88));
   box-shadow: 0 48px 120px rgba(6, 12, 24, 0.65);
   overflow: hidden;
-  margin-top: -32px;
+  margin-top: -48px;
 }
 
 .showcase__card::before {
@@ -115,8 +115,8 @@ a {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 32px;
-  margin-bottom: clamp(28px, 4vw, 52px);
+  gap: 28px;
+  margin-bottom: clamp(24px, 3.6vw, 44px);
 }
 
 .showcase__brand {
@@ -126,7 +126,7 @@ a {
 }
 
 .showcase__brand img {
-  width: clamp(68px, 9vw, 96px);
+  width: clamp(58px, 7vw, 86px);
   height: auto;
   display: block;
   filter: drop-shadow(0 8px 16px rgba(17, 34, 52, 0.65));
@@ -155,10 +155,10 @@ a {
 
 .showcase__menu {
   display: flex;
-  gap: clamp(16px, 3vw, 32px);
-  font-size: 15px;
+  gap: clamp(14px, 2.4vw, 28px);
+  font-size: 13px;
   text-transform: uppercase;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.1em;
 }
 
 .showcase__menu a {
@@ -213,11 +213,11 @@ a {
 }
 
 .showcase__title {
-  margin: 0 0 14px;
-  font-size: clamp(30px, 4.2vw, 46px);
+  margin: 0 0 12px;
+  font-size: clamp(28px, 3.6vw, 40px);
   font-weight: 600;
-  letter-spacing: -0.04em;
-  line-height: 1.05;
+  letter-spacing: -0.045em;
+  line-height: 1.04;
   white-space: nowrap;
 }
 
@@ -227,25 +227,25 @@ a {
 }
 
 .showcase__lead {
-  margin: 0 0 22px;
-  font-size: clamp(15px, 1.8vw, 18px);
-  color: rgba(226, 233, 240, 0.78);
-  max-width: 460px;
+  margin: 0 0 18px;
+  font-size: clamp(14px, 1.6vw, 16px);
+  color: rgba(226, 233, 240, 0.74);
+  max-width: 440px;
 }
 
 .showcase__actions {
   display: flex;
   flex-wrap: wrap;
-  gap: 18px;
+  gap: 14px;
 }
 
 .showcase__button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 11px 22px;
+  padding: 10px 20px;
   border-radius: 999px;
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 600;
   text-decoration: none;
   cursor: pointer;
@@ -259,24 +259,24 @@ a {
 .showcase__button--primary {
   background: linear-gradient(135deg, #ffce54, #ffb02e);
   color: #111827;
-  box-shadow: 0 12px 26px rgba(186, 125, 35, 0.4);
+  box-shadow: 0 10px 20px rgba(186, 125, 35, 0.4);
 }
 
 .showcase__button--primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 18px 34px rgba(186, 125, 35, 0.52);
+  box-shadow: 0 16px 28px rgba(186, 125, 35, 0.48);
 }
 
 .showcase__button--ghost {
-  border: 1px solid rgba(151, 193, 233, 0.45);
-  color: rgba(232, 240, 248, 0.9);
-  background: rgba(28, 45, 71, 0.4);
+  border: 1px solid rgba(151, 193, 233, 0.4);
+  color: rgba(232, 240, 248, 0.88);
+  background: rgba(28, 45, 71, 0.38);
   backdrop-filter: blur(8px);
 }
 
 .showcase__button--ghost:hover {
-  border-color: rgba(173, 208, 246, 0.7);
-  background: rgba(28, 45, 71, 0.6);
+  border-color: rgba(173, 208, 246, 0.65);
+  background: rgba(28, 45, 71, 0.56);
   transform: translateY(-1px);
 }
 
@@ -317,14 +317,14 @@ a {
 
 .showcase__visual-inner h2 {
   margin: 0;
-  font-size: clamp(22px, 3.2vw, 30px);
+  font-size: clamp(20px, 3vw, 28px);
   font-weight: 600;
   letter-spacing: -0.01em;
 }
 
 .showcase__visual-inner p {
   margin: 0;
-  font-size: clamp(14px, 1.6vw, 16px);
+  font-size: clamp(13px, 1.4vw, 15px);
   color: rgba(9, 45, 60, 0.9);
 }
 
@@ -547,6 +547,31 @@ main {
 
 .content-section + .content-section {
   margin-top: 48px;
+}
+
+.content-section__body {
+  margin-top: 16px;
+  color: rgba(224, 231, 239, 0.85);
+}
+
+.content-section__body > * + * {
+  margin-top: 14px;
+}
+
+.content-section__body ul {
+  padding-left: 1.2rem;
+  margin: 0;
+  list-style: disc;
+}
+
+.content-section__body li {
+  margin-top: 8px;
+}
+
+.content-section__body a {
+  color: #a6ddff;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
 }
 
 @media (max-width: 1080px) {
