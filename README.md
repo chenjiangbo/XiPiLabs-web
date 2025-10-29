@@ -49,4 +49,4 @@ docker build -t xipilabs-web .
 docker compose up --build
 ```
 
-镜像会先执行 `pnpm exec contentlayer build` 再 `pnpm build`，运行时直接 `pnpm start`，默认监听 3000 端口。
+镜像会先执行 `pnpm exec contentlayer build` 再 `pnpm build`，运行时直接 `pnpm start`，默认监听 3210 端口。

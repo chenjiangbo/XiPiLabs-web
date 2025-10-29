@@ -4,7 +4,9 @@ services:
     build: .
     image: xipilabs-web:latest
     ports:
-      - "3000:3000"
+      - "3210:3210"
     environment:
       NODE_ENV: production
+      PORT: 3210
+      NODE_OPTIONS: --conditions=react-server
     command: ["pnpm", "start"]

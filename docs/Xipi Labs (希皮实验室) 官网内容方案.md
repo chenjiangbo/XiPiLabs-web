@@ -18,9 +18,9 @@
 ### <font style="color:rgb(27, 28, 29);">2. 核心产品展示 (Featured Products)</font>
 <font style="color:rgb(27, 28, 29);">此区域用于立即展示您已经投入资源的主力产品。</font>
 
-+ **<font style="color:rgb(27, 28, 29);">产品卡片 1: TaleWeaver (儿童绘本生成)</font>**
++ **<font style="color:rgb(27, 28, 29);">产品卡片 1: TaleWeaver (AI 亲子故事绘本工坊)</font>**
     - **<font style="color:rgb(27, 28, 29);">标签:</font>**`<font style="color:rgb(68, 71, 70);">教育娱乐</font>``<font style="color:rgb(68, 71, 70);">AIGC</font>`
-    - **<font style="color:rgb(27, 28, 29);">标题:</font>**`<font style="color:rgb(68, 71, 70);">TaleWeaver：AI 儿童绘本生成</font>`
+    - **<font style="color:rgb(27, 28, 29);">标题:</font>**`<font style="color:rgb(68, 71, 70);">TaleWeaver：AI 亲子故事绘本工坊</font>`
     - **<font style="color:rgb(27, 28, 29);">简介:</font>**`<font style="color:rgb(68, 71, 70);">释放您和孩子的想象力。仅需一个主题，即可一键生成故事、配图和专业排版的精美绘本，可以选择不同种类声音阅读。</font>`
     - **<font style="color:rgb(27, 28, 29);">链接:</font>**`<font style="color:rgb(68, 71, 70);">[ 了解更多 > ]</font>`<font style="color:rgb(27, 28, 29);"> (链接至 TaleWeaver 的独立二级域名或产品详情页)</font>
 + **<font style="color:rgb(27, 28, 29);">产品卡片 2: XiPi Studio</font>**
