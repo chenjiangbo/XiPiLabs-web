@@ -1,0 +1,13 @@
+version: "3.9"
+services:
+  web:
+    image: ghcr.io/chenjiangbo/xipilabs-web:latest
+    pull_policy: always
+    container_name: xipilabs-web
+    restart: unless-stopped
+    ports:
+      - "3210:3210"
+    environment:
+      NODE_ENV: production
+      PORT: 3210
+      NODE_OPTIONS: --conditions=react-server
