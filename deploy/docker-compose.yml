@@ -5,7 +5,7 @@ services:
     container_name: xipilabs-web
     restart: unless-stopped
     ports:
-      - "80:3210"
+      - "3210:3210"
     environment:
       NODE_ENV: production
       PORT: 3210
