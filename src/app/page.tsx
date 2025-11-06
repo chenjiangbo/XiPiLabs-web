@@ -113,7 +113,7 @@ export default function Home() {
                 <div className="showcase__feature-grid">
                   <a
                     className="feature-card"
-                    href="https://taleweaver.xipilabs.com"
+                    href="https://taleweave.xipilabs.com"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
