@@ -2,7 +2,7 @@
 import { NextResponse } from 'next/server';
 import { Redis } from 'ioredis';
 import crypto from 'crypto';
-import DysmsClient from '@alicloud/dysmsapi20170525';
+import DysmsClient, { SendSmsRequest } from '@alicloud/dysmsapi20170525';
 import * as $OpenApi from '@alicloud/openapi-client';
 
 // --- 从 TaleWeave 迁移过来的辅助函数 ---
@@ -46,7 +46,7 @@ async function markSent(redis: Redis, phone: string, cooldown: number): Promise<
     await redis.setex(`otp:phone:cool:${phone}`, cooldown, '1');
 }
 
-async function storeCode(redis: Redis, phone: string, code: string, ttl: int): Promise<void> {
+async function storeCode(redis: Redis, phone: string, code: string, ttl: number): Promise<void> {
     await redis.setex(`otp:phone:code:${phone}`, ttl, hash(code));
     await redis.setex(`otp:phone:attempts:${phone}`, ttl, 0);
 }
@@ -84,7 +84,7 @@ async function sendSms(phone: string, code: string): Promise<void> {
     const client = new DysmsClient(config);
     const templateParam = JSON.stringify({ code });
 
-    const sendSmsRequest = new DysmsClient.models.SendSmsRequest({
+    const sendSmsRequest = new SendSmsRequest({
         phoneNumbers: phoneNumberForAliyun,
         signName: ALIYUN_SMS_SIGN_NAME,
         templateCode: ALIYUN_SMS_TEMPLATE_CODE,
@@ -94,6 +94,11 @@ async function sendSms(phone: string, code: string): Promise<void> {
     try {
         console.log(`Sending SMS to ${phoneNumberForAliyun} with code (hidden)`);
         const response = await client.sendSms(sendSmsRequest);
+
+        if (!response.body) {
+            throw new Error("SMS sending failed: No response body from Aliyun.");
+        }
+
         console.log(`Aliyun SMS response: Code=${response.body.code}, Message=${response.body.message}`);
         if (response.body.code !== 'OK') {
             throw new Error(`SMS sending failed: ${response.body.message}`);

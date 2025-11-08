@@ -50,6 +50,8 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          build-args: |
+            DATABASE_URL="postgresql://dummy:dummy@dummy:5432/dummy"
 
       - name: Upload deployment compose file
         uses: appleboy/scp-action@v1.0.0

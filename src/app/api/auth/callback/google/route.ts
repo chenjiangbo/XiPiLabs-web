@@ -5,7 +5,7 @@ import jwt from 'jsonwebtoken';
 import { cookies } from 'next/headers';
 import { v4 as uuidv4 } from 'uuid';
 import { prisma } from '@/lib/prisma';
-import { User, AuthIdentity } from '@prisma/client';
+import { users, auth_identities } from '@prisma/client';
 
 /**
  * Finds an existing user by email or creates a new one. Also creates or updates
@@ -13,7 +13,7 @@ import { User, AuthIdentity } from '@prisma/client';
  * @param userInfo - The user profile information from Google.
  * @returns The found or created user from the database.
  */
-async function upsertGoogleUser(userInfo: TokenPayload): Promise<User> {
+async function upsertGoogleUser(userInfo: TokenPayload): Promise<users> {
     if (!userInfo.email) {
         throw new Error('Email not found in Google user info');
     }
@@ -22,7 +22,7 @@ async function upsertGoogleUser(userInfo: TokenPayload): Promise<User> {
         const now = new Date();
 
         // 1. Find or create the main user record
-        let user: User | null = await tx.users.findUnique({
+        let user: users | null = await tx.users.findFirst({
             where: { email: userInfo.email },
         });
 
@@ -49,31 +49,38 @@ async function upsertGoogleUser(userInfo: TokenPayload): Promise<User> {
             });
         }
 
-        // 2. Create or update the specific auth identity
-        await tx.auth_identities.upsert({
+        // 2. Find, then update or create the specific auth identity
+        const existingIdentity = await tx.auth_identities.findFirst({
             where: {
-                user_id_provider: {
-                    user_id: user.id,
-                    provider: 'google',
-                },
-            },
-            update: {
-                provider_uid: userInfo.sub,
-                display_name: userInfo.name,
-                avatar_url: userInfo.picture,
-                updated_at: now,
-            },
-            create: {
-                id: uuidv4(),
                 user_id: user.id,
                 provider: 'google',
-                provider_uid: userInfo.sub,
-                display_name: userInfo.name,
-                avatar_url: userInfo.picture,
-                created_at: now,
-                updated_at: now,
             },
         });
+
+        if (existingIdentity) {
+            await tx.auth_identities.update({
+                where: { id: existingIdentity.id },
+                data: {
+                    provider_uid: userInfo.sub,
+                    display_name: userInfo.name,
+                    avatar_url: userInfo.picture,
+                    updated_at: now,
+                },
+            });
+        } else {
+            await tx.auth_identities.create({
+                data: {
+                    id: uuidv4(),
+                    user_id: user.id,
+                    provider: 'google',
+                    provider_uid: userInfo.sub,
+                    display_name: userInfo.name,
+                    avatar_url: userInfo.picture,
+                    created_at: now,
+                    updated_at: now,
+                },
+            });
+        }
 
         return user;
     });
@@ -138,7 +145,7 @@ export async function GET(req: NextRequest) {
         const jwtSecret = getEnvVar('JWT_SECRET');
         const authToken = jwt.sign(
             {
-                userId: user.id,
+                sub: user.id, // Use 'sub' for subject, a standard JWT claim
                 email: user.email,
                 name: payload.name,
                 picture: payload.picture,
@@ -148,9 +155,11 @@ export async function GET(req: NextRequest) {
             { expiresIn: '7d' } // Token valid for 7 days
         );
 
-        // --- 6. Set Secure, Cross-Domain Cookie ---
-        const cookieStore = cookies();
-        cookieStore.set('auth-token', authToken, {
+        // --- 6. Create response, set cookie, and redirect ---
+        const finalRedirectUrl = 'https://www.xipilabs.com';
+        const response = NextResponse.redirect(finalRedirectUrl);
+
+        response.cookies.set('auth-token', authToken, {
             domain: '.xipilabs.com',
             path: '/',
             httpOnly: true,
@@ -159,9 +168,7 @@ export async function GET(req: NextRequest) {
             maxAge: 60 * 60 * 24 * 7, // 7 days in seconds
         });
 
-        // --- 7. Redirect User ---
-        const finalRedirectUrl = 'https://www.xipilabs.com';
-        return NextResponse.redirect(finalRedirectUrl);
+        return response;
 
     } catch (error) {
         console.error('[Google Callback Error]', error);

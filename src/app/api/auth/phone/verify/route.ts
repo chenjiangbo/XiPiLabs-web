@@ -4,7 +4,7 @@ import { Redis } from 'ioredis';
 import crypto from 'crypto';
 import jwt from 'jsonwebtoken';
 import { cookies } from 'next/headers';
-import { prisma } from '@/lib/prisma'; // 假设 Prisma Client 实例从这里导入
+import { v4 as uuidv4 } from 'uuid';
 
 // --- 辅助函数 ---
 
@@ -78,8 +78,8 @@ export async function POST(request: Request) {
 
         // 验证码正确，处理用户数据库逻辑
         const now = new Date();
-        let user = await prisma.users.findUnique({
-            where: { phone: normalizedPhone },
+        let user = await prisma.users.findFirst({
+            where: { phone_number: normalizedPhone },
         });
 
         if (user) {
@@ -90,7 +90,8 @@ export async function POST(request: Request) {
         } else {
             user = await prisma.users.create({
                 data: {
-                    phone: normalizedPhone,
+                    id: uuidv4(),
+                    phone_number: normalizedPhone,
                     auth_provider: 'phone',
                     // 根据 TaleWeave schema 设置默认值
                     subscription_status: 'free',
@@ -112,8 +113,8 @@ export async function POST(request: Request) {
         }
 
         const tokenPayload = {
-            userId: user.id,
-            phone: user.phone,
+            sub: user.id,
+            phone: user.phone_number,
             provider: 'phone',
         };
 
@@ -123,8 +124,10 @@ export async function POST(request: Request) {
             audience: 'xipilabs-products',
         });
 
-        // 设置跨域 Cookie
-        cookies().set('auth-token', token, {
+        // 设置跨域 Cookie 并返回响应
+        const response = NextResponse.json({ success: true, userId: user.id });
+        
+        response.cookies.set('auth-token', token, {
             domain: '.xipilabs.com',
             path: '/',
             httpOnly: true,
@@ -133,7 +136,7 @@ export async function POST(request: Request) {
             maxAge: 60 * 60 * 24 * 7, // 7 days
         });
 
-        return NextResponse.json({ success: true, userId: user.id });
+        return response;
 
     } catch (error) {
         console.error('Error in /api/auth/phone/verify:', error);

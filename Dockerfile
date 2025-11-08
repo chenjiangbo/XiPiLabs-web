@@ -10,6 +10,8 @@ COPY package.json pnpm-lock.yaml ./
 RUN corepack enable && pnpm install --frozen-lockfile
 
 FROM deps AS builder
+ARG DATABASE_URL
+ENV DATABASE_URL=$DATABASE_URL
 ENV NODE_ENV=production
 ENV NODE_OPTIONS=--conditions=react-server
 COPY . .
