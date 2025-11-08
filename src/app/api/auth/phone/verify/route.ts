@@ -4,7 +4,7 @@ import { Redis } from 'ioredis';
 import crypto from 'crypto';
 import jwt from 'jsonwebtoken';
 import { cookies } from 'next/headers';
-import prisma from '@/lib/prisma'; // 假设 Prisma Client 实例从这里导入
+import { prisma } from '@/lib/prisma'; // 假设 Prisma Client 实例从这里导入
 
 // --- 辅助函数 ---
 

@@ -5,7 +5,7 @@ import jwt from 'jsonwebtoken';
 import { cookies } from 'next/headers';
 import { v4 as uuidv4 } from 'uuid';
 import { prisma } from '@/lib/prisma';
-import { users, auth_identities } from '@prisma/client';
+import { User, AuthIdentity } from '@prisma/client';
 
 /**
  * Finds an existing user by email or creates a new one. Also creates or updates
@@ -13,7 +13,7 @@ import { users, auth_identities } from '@prisma/client';
  * @param userInfo - The user profile information from Google.
  * @returns The found or created user from the database.
  */
-async function upsertGoogleUser(userInfo: TokenPayload): Promise<users> {
+async function upsertGoogleUser(userInfo: TokenPayload): Promise<User> {
     if (!userInfo.email) {
         throw new Error('Email not found in Google user info');
     }
@@ -22,7 +22,7 @@ async function upsertGoogleUser(userInfo: TokenPayload): Promise<users> {
         const now = new Date();
 
         // 1. Find or create the main user record
-        let user = await tx.users.findUnique({
+        let user: User | null = await tx.users.findUnique({
             where: { email: userInfo.email },
         });
 
