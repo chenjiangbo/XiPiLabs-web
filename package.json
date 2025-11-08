@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@alicloud/dysmsapi20170525": "^4.2.0",
+    "@alicloud/openapi-client": "^0.4.15",
     "@prisma/client": "6.19.0",
     "contentlayer": "^0.3.4",
     "google-auth-library": "^10.5.0",
