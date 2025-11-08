@@ -146,7 +146,7 @@ export default function LoginForm() {
     return (
         <div className="login-container">
             <div className="login-form-area">
-                <div className="login-view-wrapper" style={{ transform: `translateX(${view === 'select' ? '0%' : '-100%'})` }}>
+                <div className="login-view-wrapper" style={{ transform: `translateX(${view === 'select' ? '0%' : '-50%'})` }}>
                     {renderSelectionView()}
                     {renderPhoneLoginView()}
                 </div>

@@ -88,7 +88,7 @@ export default function AuthNavMenu() {
           </>
         ) : (
           <Link href="/login" className="auth-login-link">
-            登录
+            加入我们
           </Link>
         )}
       </div>
