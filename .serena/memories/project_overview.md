@@ -1,0 +1,5 @@
+# Project Overview
+- XiPi Labs marketing and account experience built with Next.js App Router. Landing sections are sourced from MDX via Contentlayer and the app also exposes API routes for phone-based auth, sessions, and profile data.
+- Tech stack: Next.js 16 + React 19 with TypeScript, Tailwind CSS v4 (via the new `@import "tailwindcss"` pipeline), Contentlayer for MDX ingestion, Prisma ORM targeting PostgreSQL, Redis for OTP flows, and Docker/Docker Compose for deployment.
+- Key directories: `src/app` (App Router routes, API endpoints, global styles/layout), `src/components` (shared UI), `src/lib` (Prisma client and other helpers), `content/` (MDX section sources), `prisma/` (schema + migrations/config), `deploy/` (deployment assets), and `public/` (static images/assets).
+- Environment variables drive secrets such as `DATABASE_URL`, `REDIS_URL`, `JWT_SECRET`, Aliyun SMS credentials, and front-end URLs used by API routes.

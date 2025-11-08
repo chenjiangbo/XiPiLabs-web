@@ -4,6 +4,7 @@ export const dynamic = "force-dynamic";
 import type { CSSProperties } from "react";
 import { allSections } from "contentlayer/generated";
 import { useMDXComponent } from "next-contentlayer/hooks";
+import AuthNavMenu from "@/components/AuthNavMenu";
 
 type SectionDoc = (typeof allSections)[number];
 
@@ -71,15 +72,7 @@ export default function Home() {
                   <small className="showcase__brand-slogan">用 AI 探索创意与未来</small>
                 </div>
               </div>
-              <nav className="showcase__menu">
-                <a href="#">Home</a>
-                <a href="#about">关于我们</a>
-                <a href="#ai-products">AI 产品矩阵</a>
-                <a href="#philosophy">理念与文化</a>
-                <a href="#ai-education">AI 与教育</a>
-                <a href="#journal">实验室纪事</a>
-                <a href="#contact">联系我们</a>
-              </nav>
+              <AuthNavMenu />
             </div>
 
             <div className="showcase__body">
