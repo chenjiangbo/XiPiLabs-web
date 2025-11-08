@@ -5,6 +5,7 @@ import crypto from 'crypto';
 import jwt from 'jsonwebtoken';
 import { cookies } from 'next/headers';
 import { v4 as uuidv4 } from 'uuid';
+import { prisma } from '@/lib/prisma';
 
 // --- 辅助函数 ---
 
@@ -79,7 +80,7 @@ export async function POST(request: Request) {
         // 验证码正确，处理用户数据库逻辑
         const now = new Date();
         let user = await prisma.users.findFirst({
-            where: { phone_number: normalizedPhone },
+            where: { phone: normalizedPhone },
         });
 
         if (user) {
@@ -91,7 +92,7 @@ export async function POST(request: Request) {
             user = await prisma.users.create({
                 data: {
                     id: uuidv4(),
-                    phone_number: normalizedPhone,
+                    phone: normalizedPhone,
                     auth_provider: 'phone',
                     // 根据 TaleWeave schema 设置默认值
                     subscription_status: 'free',
@@ -114,7 +115,7 @@ export async function POST(request: Request) {
 
         const tokenPayload = {
             sub: user.id,
-            phone: user.phone_number,
+            phone: user.phone,
             provider: 'phone',
         };
 

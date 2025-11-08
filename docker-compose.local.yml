@@ -1,0 +1,39 @@
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        DATABASE_URL: "postgresql://dummy:dummy@dummy:5432/dummy" # For prisma generate during build
+    container_name: xipilabs-web-local
+    restart: unless-stopped
+    ports:
+      - "3210:3210"
+    env_file:
+      - .env.local # Load local environment variables
+    networks:
+      - xipi-network
+    environment:
+      NODE_ENV: development # Or production, depending on local testing needs
+      PORT: 3210
+      NODE_OPTIONS: --conditions=react-server
+      # Ensure all necessary env vars from .env.local are explicitly listed here if env_file doesn't work as expected
+      # For example:
+      # REDIS_URL: ${REDIS_URL}
+      # DATABASE_URL: ${DATABASE_URL}
+      # GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
+      # GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
+      # GOOGLE_REDIRECT_URI: ${GOOGLE_REDIRECT_URI}
+      # JWT_SECRET: ${JWT_SECRET}
+      # ALIYUN_ACCESS_KEY_ID: ${ALIYUN_ACCESS_KEY_ID}
+      # ALIYUN_ACCESS_KEY_SECRET: ${ALIYUN_ACCESS_KEY_SECRET}
+      # ALIYUN_SMS_SIGN_NAME: ${ALIYUN_SMS_SIGN_NAME}
+      # ALIYUN_SMS_TEMPLATE_CODE: ${ALIYUN_SMS_TEMPLATE_CODE}
+      # OTP_DEV_MODE: ${OTP_DEV_MODE}
+      # OTP_CODE_LEN: ${OTP_CODE_LEN}
+      # OTP_TTL_SECONDS: ${OTP_TTL_SECONDS}
+      # OTP_SEND_COOLDOWN_SECONDS: ${OTP_SEND_COOLDOWN_SECONDS}
+
+networks:
+  xipi-network:
+    external: true

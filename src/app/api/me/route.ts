@@ -1,11 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import jwt from 'jsonwebtoken';
-import { cookies } from 'next/headers';
 import { prisma } from '@/lib/prisma';
 
 export async function GET(req: NextRequest) {
-    const cookieStore = cookies();
-    const token = cookieStore.get('auth-token')?.value;
+    const token = req.cookies.get('auth-token')?.value;
 
     if (!token) {
         return NextResponse.json({ error: 'Not authenticated' }, { status: 401 });
@@ -18,10 +16,10 @@ export async function GET(req: NextRequest) {
     }
 
     try {
-        const payload = jwt.verify(token, jwtSecret) as { userId: string };
-        const userId = payload.userId;
+        const payload = jwt.verify(token, jwtSecret) as { sub: string };
+        const userId = payload.sub;
 
-        if (!userId) {
+        if (!userId || typeof userId !== 'string') {
             return NextResponse.json({ error: 'Invalid token payload' }, { status: 401 });
         }
 
@@ -42,7 +40,7 @@ export async function GET(req: NextRequest) {
             return NextResponse.json({ error: 'User not found' }, { status: 404 });
         }
 
-        const latestIdentity = user.auth_identities[0];
+        const latestIdentity = user.auth_identities && user.auth_identities.length > 0 ? user.auth_identities[0] : null;
 
         const userData = {
             id: user.id,

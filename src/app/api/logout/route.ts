@@ -2,12 +2,14 @@ import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 
 export async function GET() {
-    const cookieStore = cookies();
-
     try {
+        // Create a response object to handle the redirect and cookie deletion.
+        const homeUrl = new URL('/', process.env.NEXT_PUBLIC_BASE_URL || 'https://www.xipilabs.com');
+        const response = NextResponse.redirect(homeUrl);
+
         // To delete a cookie, we set its value to empty and maxAge to 0.
         // It's crucial to provide the same domain and path attributes.
-        cookieStore.set('auth-token', '', {
+        response.cookies.set('auth-token', '', {
             domain: '.xipilabs.com',
             path: '/',
             httpOnly: true,
@@ -16,14 +18,12 @@ export async function GET() {
             maxAge: 0, // Set maxAge to 0 to expire the cookie immediately
         });
 
-        // Redirect to the homepage after logging out.
-        const homeUrl = 'https://www.xipilabs.com';
-        return NextResponse.redirect(homeUrl);
+        return response;
 
     } catch (error) {
         console.error('[Logout Error]', error);
-        // Even if there's an error, try to redirect.
-        const homeUrl = 'https://www.xipilabs.com';
+        // Even if there's an error, try to redirect without cookie modification.
+        const homeUrl = new URL('/', process.env.NEXT_PUBLIC_BASE_URL || 'https://www.xipilabs.com');
         return NextResponse.redirect(homeUrl);
     }
 }
