@@ -10,6 +10,8 @@ services:
       NODE_ENV: production
       PORT: 3210
       NODE_OPTIONS: --conditions=react-server
+    env_file:
+      - .env
     networks:
       - xipi-network
 
