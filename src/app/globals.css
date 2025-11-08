@@ -1147,6 +1147,7 @@ main {
 .showcase__menu > * {
   display: inline-flex;
   align-items: center;
+  vertical-align: middle; /* Enforce vertical alignment */
 }
 
 .showcase__auth-links {
@@ -1154,6 +1155,8 @@ main {
   align-items: center;
   gap: 8px;
   margin-left: auto; /* Pushes auth links to the right */
+  position: relative;
+  top: -4px; /* Nudge into perfect alignment */
 }
 
 .auth-link-placeholder {
@@ -1206,7 +1209,6 @@ main {
   letter-spacing: 0.1em;
   color: rgba(235, 241, 248, 0.78);
   font-weight: normal;
-  padding-bottom: 8px; /* Match padding of a tags */
 }
 
 .auth-icon-button {
@@ -1238,6 +1240,7 @@ main {
   height: 16px;
 }
 
+/* === Login Page & Form Styles (Robust Flexbox Implementation) === */
 @keyframes fadeInUp {
   from {
     opacity: 0;
@@ -1253,23 +1256,28 @@ main {
   position: relative;
   z-index: 1;
   margin-top: clamp(24px, 3.2vw, 48px);
-  /* Let height be natural */
-  display: grid;
-  grid-template-columns: minmax(0, 55%) minmax(0, 45%); /* Left form, right image space */
+  display: flex;
+  align-items: stretch;
   width: 100%;
+  min-height: 480px;
   animation: fadeInUp 0.6s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+  background: rgba(10, 20, 35, 0.75); /* Apply background to the container */
+  border-radius: 24px;
+  overflow: hidden;
 }
 
-.login-form-area {
-  grid-column: 1 / 2; /* Place in the first column */
-  position: relative; /* New positioning context */
-  
-  /* Re-apply inner card style */
-  background: rgba(10, 20, 35, 0.75);
-  border-radius: 24px;
-  border: 1px solid rgba(118, 186, 241, 0.1);
-  box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.05);
+.login-form-wrapper {
+  flex: 0 0 45%;
   padding: clamp(32px, 4vw, 48px);
+  position: relative; /* For the absolute positioned views inside */
+  overflow: hidden; /* Hide the overflowing slider views */
+  border-right: 1px solid rgba(118, 186, 241, 0.1);
+}
+
+.login-image-wrapper {
+  flex: 1 1 55%;
+  background-size: cover;
+  background-position: center;
 }
 
 .login-view {
@@ -1418,3 +1426,15 @@ main {
   text-align: center;
   margin-top: 16px;
 }
+
+@media (max-width: 880px) {
+  .login-image-wrapper {
+    display: none;
+  }
+  .login-form-wrapper {
+    flex: 0 0 100%;
+    border-radius: 24px; /* Ensure full radius on mobile */
+    border-right: none;
+  }
+}
+

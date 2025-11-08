@@ -21,17 +21,18 @@ const heroImages = [
 ] as const;
 
 export default function LoginPage() {
-  // Randomly select a hero image
+  // Randomly select a hero image for the right-side container
   const heroArt = heroImages[Math.floor(Math.random() * heroImages.length)];
-  const heroCardStyle = {
-    "--hero-art": `url(${heroArt})`,
+  const imageContainerStyle = {
+    backgroundImage: `url(${heroArt})`,
   } as CSSProperties;
 
   return (
     <div className="site-header">
       <div className="showcase">
         <div className="showcase__glow" />
-        <div className="showcase__card" style={heroCardStyle}>
+        {/* The main card no longer needs the pseudo-element style */}
+        <div className="showcase__card">
           {/* Simplified nav for login page */}
           <div className="showcase__nav">
             <Link href="/" className="showcase__brand">
@@ -52,9 +53,12 @@ export default function LoginPage() {
             </Link>
           </div>
 
-          {/* The main content area is replaced by the LoginForm */}
+          {/* The main content area now uses an explicit flex layout */}
           <div className="login-page-content">
-            <LoginForm />
+            <div className="login-form-wrapper">
+              <LoginForm />
+            </div>
+            <div className="login-image-wrapper" style={imageContainerStyle}></div>
           </div>
         </div>
       </div>
