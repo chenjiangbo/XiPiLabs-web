@@ -1144,10 +1144,15 @@ main {
 }
 
 /* === Auth Nav Menu Styles === */
-.showcase__auth-links {
-  display: flex;
+.showcase__menu > * {
+  display: inline-flex;
   align-items: center;
-  gap: 10px;
+}
+
+.showcase__auth-links {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   margin-left: auto; /* Pushes auth links to the right */
 }
 
@@ -1190,17 +1195,9 @@ main {
 }
 
 .auth-user-info {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 8px;
-}
-
-.auth-user-avatar {
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 1px solid rgba(118, 186, 241, 0.3);
 }
 
 .auth-user-name {
@@ -1209,9 +1206,10 @@ main {
   letter-spacing: 0.1em;
   color: rgba(235, 241, 248, 0.78);
   font-weight: normal;
+  padding-bottom: 8px; /* Match padding of a tags */
 }
 
-.auth-logout-button {
+.auth-icon-button {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1220,17 +1218,21 @@ main {
   padding: 0;
   width: 26px;
   height: 26px;
-  cursor: pointer;
   color: rgba(235, 241, 248, 0.6);
   border-radius: 50%;
   transition: background-color 160ms ease, color 160ms ease;
 }
 
-.auth-logout-button:hover {
+.auth-icon-button[aria-label="Logout"] {
+  cursor: pointer;
+}
+
+.auth-icon-button[aria-label="Logout"]:hover {
   background-color: rgba(118, 186, 241, 0.1);
   color: rgba(235, 241, 248, 0.95);
 }
 
+.user-icon,
 .logout-icon {
   width: 16px;
   height: 16px;
@@ -1260,8 +1262,7 @@ main {
 
 .login-form-area {
   grid-column: 1 / 2; /* Place in the first column */
-  position: relative;
-  overflow: hidden; /* Crucial for the sliding effect */
+  position: relative; /* New positioning context */
   
   /* Re-apply inner card style */
   background: rgba(10, 20, 35, 0.75);
@@ -1271,19 +1272,34 @@ main {
   padding: clamp(32px, 4vw, 48px);
 }
 
-.login-view-wrapper {
-  display: flex;
-  width: 200%; /* Container for two views */
-  height: 100%;
-  transition: transform 0.4s cubic-bezier(0.45, 0, 0.55, 1);
-}
-
 .login-view {
-  width: 50%; /* Each view takes half of the wrapper */
+  position: absolute;
+  inset: clamp(32px, 4vw, 48px); /* Match parent padding */
   padding: 0 16px; /* Add some horizontal padding inside */
   display: flex;
   flex-direction: column;
   justify-content: center;
+  transition: transform 0.45s cubic-bezier(0.45, 0, 0.55, 1), opacity 0.3s ease;
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.login-view.is-exiting {
+  transform: translateX(-100%);
+  opacity: 0;
+  z-index: 0;
+}
+
+.login-view.is-entering {
+  transform: translateX(100%);
+  opacity: 0;
+  z-index: 1;
+}
+
+.login-view.is-active {
+  transform: translateX(0);
+  opacity: 1;
+  z-index: 1;
 }
 
 .login-title {

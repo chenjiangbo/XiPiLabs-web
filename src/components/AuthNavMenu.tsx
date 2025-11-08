@@ -9,6 +9,24 @@ interface User {
   avatarUrl: string | null;
 }
 
+const UserIcon = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="20"
+    height="20"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2.5"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    className="user-icon"
+  >
+    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+    <circle cx="12" cy="7" r="4"></circle>
+  </svg>
+);
+
 // A simple, generic icon for logout
 const LogoutIcon = () => (
   <svg
@@ -78,11 +96,12 @@ export default function AuthNavMenu() {
         ) : user ? (
           <>
             <span className="auth-user-info">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={user.avatarUrl || '/xipi_log_notext.png'} alt={user.displayName} className="auth-user-avatar" />
+              <span className="auth-icon-button">
+                <UserIcon />
+              </span>
               <span className="auth-user-name">{user.displayName}</span>
             </span>
-            <button onClick={handleLogout} className="auth-logout-button" aria-label="Logout">
+            <button onClick={handleLogout} className="auth-icon-button" aria-label="Logout">
               <LogoutIcon />
             </button>
           </>

@@ -82,7 +82,7 @@ export default function LoginForm() {
     }
 
     const renderSelectionView = () => (
-        <div className="login-view">
+        <div className={`login-view ${view === 'select' ? 'is-active' : 'is-exiting'}`}>
             <h2 className="login-title">欢迎回来</h2>
             <p className="login-subtitle">选择您的登录方式</p>
             <div className="login-actions">
@@ -103,7 +103,7 @@ export default function LoginForm() {
     );
 
     const renderPhoneLoginView = () => (
-        <div className="login-view">
+        <div className={`login-view ${view === 'phone' ? 'is-active' : 'is-entering'}`}>
             <button onClick={resetToSelect} className="login-back-button">
                 <BackIcon />
                 <span>返回</span>
@@ -146,10 +146,8 @@ export default function LoginForm() {
     return (
         <div className="login-container">
             <div className="login-form-area">
-                <div className="login-view-wrapper" style={{ transform: `translateX(${view === 'select' ? '0%' : '-50%'})` }}>
-                    {renderSelectionView()}
-                    {renderPhoneLoginView()}
-                </div>
+                {renderSelectionView()}
+                {renderPhoneLoginView()}
             </div>
         </div>
     );
