@@ -5,8 +5,8 @@ import Link from "next/link";
 
 // Define the user type based on expected API response
 interface User {
-  name: string;
-  avatar: string;
+  displayName: string;
+  avatarUrl: string | null;
 }
 
 // A simple, generic icon for logout
@@ -18,14 +18,13 @@ const LogoutIcon = () => (
     viewBox="0 0 24 24"
     fill="none"
     stroke="currentColor"
-    strokeWidth="2"
+    strokeWidth="2.5"
     strokeLinecap="round"
     strokeLinejoin="round"
     className="logout-icon"
   >
-    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
-    <polyline points="16 17 21 12 16 7" />
-    <line x1="21" y1="12" x2="9" y2="12" />
+    <path d="M18.36 6.64a9 9 0 1 1-12.73 0"></path>
+    <line x1="12" y1="2" x2="12" y2="12"></line>
   </svg>
 );
 
@@ -80,8 +79,8 @@ export default function AuthNavMenu() {
           <>
             <span className="auth-user-info">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={user.avatar || '/xipi_log_notext.png'} alt={user.name} className="auth-user-avatar" />
-              <span className="auth-user-name">{user.name}</span>
+              <img src={user.avatarUrl || '/xipi_log_notext.png'} alt={user.displayName} className="auth-user-avatar" />
+              <span className="auth-user-name">{user.displayName}</span>
             </span>
             <button onClick={handleLogout} className="auth-logout-button" aria-label="Logout">
               <LogoutIcon />

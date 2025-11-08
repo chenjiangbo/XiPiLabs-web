@@ -2,10 +2,29 @@ import type { CSSProperties } from "react";
 import LoginForm from "@/components/LoginForm";
 import Link from "next/link";
 
+// Replicate the hero images array from the main page
+const heroImages = [
+  "/cover_random/hero1.png",
+  "/cover_random/hero2.png",
+  "/cover_random/hero3.png",
+  "/cover_random/hero4.png",
+  "/cover_random/hero5.png",
+  "/cover_random/hero6.png",
+  "/cover_random/hero7.png",
+  "/cover_random/hero8.png",
+  "/cover_random/hero9.png",
+  "/cover_random/hero10.png",
+  "/cover_random/hero11.png",
+  "/cover_random/hero12.png",
+  "/cover_random/hero13.png",
+  "/cover_random/hero14.png",
+] as const;
+
 export default function LoginPage() {
-  // Use a static background for the login page for consistency
+  // Randomly select a hero image
+  const heroArt = heroImages[Math.floor(Math.random() * heroImages.length)];
   const heroCardStyle = {
-    "--hero-art": `url(/cover_random/hero4.png)`,
+    "--hero-art": `url(${heroArt})`,
   } as CSSProperties;
 
   return (

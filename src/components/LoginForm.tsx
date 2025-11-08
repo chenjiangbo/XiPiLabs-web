@@ -145,13 +145,6 @@ export default function LoginForm() {
 
     return (
         <div className="login-container">
-            <div className="login-image-placeholder">
-                {/* Placeholder for the user's image */}
-                <div className="login-image-content">
-                    <h3>欢迎来到希皮实验室</h3>
-                    <p>用 AI 探索创意与未来，构建实用、易用、富有创意的 AI 应用。</p>
-                </div>
-            </div>
             <div className="login-form-area">
                 <div className="login-view-wrapper" style={{ transform: `translateX(${view === 'select' ? '0%' : '-100%'})` }}>
                     {renderSelectionView()}
