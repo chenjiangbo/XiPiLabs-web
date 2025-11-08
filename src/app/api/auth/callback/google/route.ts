@@ -150,6 +150,7 @@ export async function GET(req: NextRequest) {
                 name: payload.name,
                 picture: payload.picture,
                 iss: 'xipilabs-auth',
+                aud: 'xipilabs-products', // Add audience claim
             },
             jwtSecret,
             { expiresIn: '7d' } // Token valid for 7 days
@@ -164,7 +165,7 @@ export async function GET(req: NextRequest) {
             path: '/',
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
-            sameSite: 'lax',
+            sameSite: 'none', // Use 'none' for cross-site cookie sending
             maxAge: 60 * 60 * 24 * 7, // 7 days in seconds
         });
 
