@@ -1,0 +1,140 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model admin_users {
+  id            String    @id @db.VarChar(36)
+  email         String    @unique(map: "ix_admin_users_email") @db.VarChar(255)
+  name          String?   @db.VarChar(120)
+  password_hash String    @db.VarChar(255)
+  role          String    @db.VarChar(32)
+  is_active     Boolean
+  last_login_at DateTime? @db.Timestamptz(6)
+  created_at    DateTime  @db.Timestamptz(6)
+  updated_at    DateTime  @db.Timestamptz(6)
+}
+
+model alembic_version {
+  version_num String @id @db.VarChar(32)
+}
+
+model auth_identities {
+  id           String   @id @db.VarChar(36)
+  user_id      String   @db.VarChar(36)
+  provider     String   @db.VarChar(32)
+  provider_uid String   @db.VarChar(128)
+  unionid      String?  @db.VarChar(128)
+  display_name String?  @db.VarChar(255)
+  avatar_url   String?  @db.VarChar(512)
+  metadata     String?
+  created_at   DateTime @db.Timestamptz(6)
+  updated_at   DateTime @db.Timestamptz(6)
+  users        users    @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@index([provider], map: "ix_auth_id_provider")
+  @@index([provider_uid], map: "ix_auth_id_provider_uid")
+  @@index([user_id], map: "ix_auth_id_user_id")
+}
+
+model generation_logs {
+  id                  String   @id @default(dbgenerated("gen_random_uuid()")) @db.VarChar(36)
+  tale_id             String   @db.VarChar(36)
+  user_input          Json     @db.Json
+  novelty_injection   Json?    @db.Json
+  stage1_prompt       Json?    @db.Json
+  stage1_raw_response String?
+  stage2_prompt       Json?    @db.Json
+  stage2_raw_response String?
+  image_prompts       Json?    @db.Json
+  error_message       String?
+  created_at          DateTime @default(now()) @db.Timestamptz(6)
+  image_provider      String?  @db.VarChar(32)
+  timing_details      Json?    @db.Json
+  tales               tales    @relation(fields: [tale_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_generation_logs_tale_id")
+
+  @@index([tale_id], map: "ix_generation_logs_tale_id")
+}
+
+model tales {
+  id                    String            @id @db.VarChar(36)
+  user_id               String            @db.VarChar(36)
+  title                 String            @db.VarChar(255)
+  status                String            @default("processing") @db.VarChar(16)
+  creation_mode         String            @db.VarChar(16)
+  prompt_text           String            @db.VarChar(1024)
+  input_params          Json?
+  pages                 Json?
+  cover_image_url       String?           @db.VarChar(512)
+  full_audio_url        String?           @db.VarChar(512)
+  series_parent_id      String?           @db.VarChar(36)
+  created_at            DateTime          @db.Timestamptz(6)
+  blueprint             Json?             @db.Json
+  page_count            Int?
+  updated_at            DateTime?         @db.Timestamptz(6)
+  error                 String?
+  prompt_stage1         String?
+  prompt_stage2         String?
+  raw_response_stage1   String?
+  raw_response_stage2   String?
+  llm_provider          String?           @db.VarChar(32)
+  llm_model             String?           @db.VarChar(64)
+  image_provider        String?           @db.VarChar(32)
+  translation_model     String?           @db.VarChar(64)
+  pdf_url               String?           @db.VarChar(512)
+  pdf_generation_status String?           @db.VarChar(16)
+  title_audio_url       String?           @db.VarChar(512)
+  generation_step       String?           @db.VarChar(64)
+  generation_progress   Int?
+  is_favorited          Boolean           @default(false)
+  is_featured           Boolean           @default(false)
+  featured_at           DateTime?         @db.Timestamptz(6)
+  generation_logs       generation_logs[]
+  tales                 tales?            @relation("talesTotales", fields: [series_parent_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  other_tales           tales[]           @relation("talesTotales")
+  users                 users             @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@index([user_id], map: "ix_tales_user_id")
+}
+
+model user_point_transactions {
+  id              String   @id @db.VarChar(36)
+  user_id         String   @db.VarChar(36)
+  delta           Int
+  balance_after   Int
+  reason          String   @db.VarChar(64)
+  related_tale_id String?  @db.VarChar(36)
+  metadata        Json?
+  created_at      DateTime @default(dbgenerated("timezone('utc'::text, now())")) @db.Timestamptz(6)
+  users           users    @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([user_id, created_at], map: "ix_user_point_tx_user_id_created_at")
+}
+
+model users {
+  id                      String                    @id @db.VarChar(36)
+  email                   String?                   @db.VarChar(255)
+  phone                   String?                   @db.VarChar(32)
+  auth_provider           String                    @db.VarChar(16)
+  subscription_status     String                    @default("free") @db.VarChar(16)
+  child_profile           String?
+  last_login_at           DateTime?                 @db.Timestamptz(6)
+  created_at              DateTime                  @db.Timestamptz(6)
+  updated_at              DateTime                  @db.Timestamptz(6)
+  points_balance          Int
+  lifetime_points_earned  Int
+  lifetime_points_spent   Int
+  membership_tier         String                    @default("free") @db.VarChar(16)
+  membership_expires_at   DateTime?                 @db.Timestamptz(6)
+  last_points_refresh_at  DateTime?                 @db.Timestamptz(6)
+  auth_identities         auth_identities[]
+  tales                   tales[]
+  user_point_transactions user_point_transactions[]
+
+  @@index([email], map: "ix_users_email")
+  @@index([phone], map: "ix_users_phone")
+}

@@ -73,6 +73,7 @@ jobs:
             set -e
             export DOCKER_COMPOSE_DISABLE_TUI=1
             cd ${{ secrets.PROJECT_PATH }}
+            echo "${{ secrets.DOT_ENV }}" > .env
             docker compose pull
             docker compose up -d
             docker image prune -f
