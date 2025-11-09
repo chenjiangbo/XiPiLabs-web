@@ -1175,6 +1175,8 @@ main {
   font-size: 11px;
   text-transform: uppercase;
   letter-spacing: 0.1em;
+  position: relative;
+  top: 2px;
 }
 
 .auth-login-link::after {
@@ -1267,7 +1269,7 @@ main {
 
 .login-container {
   /* This is the "inner card" for the login form */
-  width: 400px;
+  width: 405px;
   background: rgba(10, 20, 35, 0.75);
   border-radius: 24px;
   border: 1px solid rgba(118, 186, 241, 0.1);
@@ -1434,5 +1436,5 @@ main {
 /* === Login Page Overrides === */
 .login-page-wrapper .showcase__card::before {
   top: 120px; /* Move image down */
-  right: 20px; /* Move image to the right */
+  right: 30px; /* Move image to the left */
 }

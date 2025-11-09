@@ -50,3 +50,15 @@ docker compose up --build
 ```
 
 镜像会先执行 `pnpm exec contentlayer build` 再 `pnpm build`，运行时直接 `pnpm start`，默认监听 3210 端口。
+
+## 本地环境变量
+
+- 新增 `.env.development.local.example`，复制为 `.env.development.local` 后即可按照本地需求修改，不会影响线上使用的 `.env.local`。
+- Next.js 在 `pnpm dev` 时会优先加载 `.env.development.local`，因此本地变量会覆盖生产变量，而不会改动到原有文件。
+- 本地容器可通过下列方式显式指定 env 文件：
+
+```bash
+LOCAL_ENV_FILE=.env.development.local docker compose -f docker-compose.local.yml up --build
+```
+
+如无需本地短信，可保持示例文件中的 `OTP_DEV_MODE=true` 以跳过阿里云短信发送。
