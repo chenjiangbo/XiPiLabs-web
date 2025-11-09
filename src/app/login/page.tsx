@@ -28,7 +28,7 @@ export default function LoginPage() {
   } as CSSProperties;
 
   return (
-    <div className="site-header">
+    <div className="site-header login-page-wrapper">
       <div className="showcase">
         <div className="showcase__glow" />
         <div className="showcase__card" style={heroCardStyle}>
@@ -52,9 +52,11 @@ export default function LoginPage() {
             </Link>
           </div>
 
-          {/* The main content area is replaced by the LoginForm */}
-          <div className="login-page-content">
-            <LoginForm />
+          {/* The main content area now mimics the main page's structure */}
+          <div className="showcase__body">
+            <div className="showcase__intro">
+              <LoginForm />
+            </div>
           </div>
         </div>
       </div>

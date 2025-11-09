@@ -1156,6 +1156,8 @@ main {
   align-items: center;
   gap: 8px;
   margin-left: auto; /* Pushes auth links to the right */
+  position: relative;
+  top: -2px; /* Manual nudge for pixel-perfect alignment */
 }
 
 .auth-link-placeholder {
@@ -1240,7 +1242,7 @@ main {
   height: 14px;
 }
 
-/* === Login Page & Form Styles (Final Implementation) === */
+/* === Login Page & Form Styles (Final, Corrected Implementation) === */
 @keyframes fadeInUp {
   from {
     opacity: 0;
@@ -1252,17 +1254,17 @@ main {
   }
 }
 
-.login-page-content {
-  position: relative;
-  z-index: 1;
-  margin-top: clamp(24px, 3.2vw, 48px);
-  min-height: 480px;
+/* Reduce nav margin ONLY on the login page to move the form up */
+.login-page-wrapper .showcase__nav {
+  margin-bottom: 20px;
+}
+
+.login-page-wrapper .showcase__body {
   animation: fadeInUp 0.6s cubic-bezier(0.25, 1, 0.5, 1) forwards;
 }
 
 .login-container {
   /* This is the "inner card" for the login form */
-  max-width: 450px;
   background: rgba(10, 20, 35, 0.75);
   border-radius: 24px;
   border: 1px solid rgba(118, 186, 241, 0.1);
@@ -1424,14 +1426,4 @@ main {
   .login-container {
     max-width: 100%;
   }
-  .login-image-wrapper {
-    display: none;
-  }
-  .login-form-wrapper {
-    flex: 0 0 100%;
-    border-radius: 24px; /* Ensure full radius on mobile */
-    border-right: none;
-  }
 }
-
-
