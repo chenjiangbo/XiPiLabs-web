@@ -1265,6 +1265,7 @@ main {
 
 .login-container {
   /* This is the "inner card" for the login form */
+  width: 440px;
   background: rgba(10, 20, 35, 0.75);
   border-radius: 24px;
   border: 1px solid rgba(118, 186, 241, 0.1);
