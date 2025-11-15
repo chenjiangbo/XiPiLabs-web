@@ -23,6 +23,35 @@ body {
   min-height: 100%;
 }
 
+.language-switcher-container {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  z-index: 50;
+}
+
+.language-switcher-container select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-color: rgba(28, 45, 71, 0.56);
+  border: 1px solid rgba(151, 193, 233, 0.4);
+  border-radius: 6px;
+  padding: 8px 32px 8px 12px;
+  color: rgba(232, 240, 248, 0.88);
+  font-size: 13px;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%239ca3af' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+  background-position: right 0.5rem center;
+  background-repeat: no-repeat;
+  background-size: 1.5em 1.5em;
+  transition: border-color 160ms ease;
+}
+
+.language-switcher-container select:hover {
+  border-color: rgba(173, 208, 246, 0.65);
+}
+
 body {
   background-color: var(--background);
   color: var(--foreground);
@@ -58,9 +87,13 @@ a {
 .site-header {
   position: relative;
   min-height: 100vh;
-  padding: 48px 24px 100px;
+  padding: 48px 24px 60px;
   display: flex;
   align-items: flex-start;
+}
+
+main > .content-section:first-child {
+  margin-top: 0;
 }
 
 .showcase {
@@ -87,7 +120,7 @@ a {
   background: linear-gradient(140deg, rgba(20, 32, 52, 0.92), rgba(18, 25, 41, 0.88));
   box-shadow: 0 48px 120px rgba(6, 12, 24, 0.65);
   overflow: hidden;
-  margin-top: -12px;
+  margin-top: 20px;
 }
 
 .showcase__card::before {

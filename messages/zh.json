@@ -1,0 +1,54 @@
+{
+  "HomePage": {
+    "slogan": "用 AI 探索创意与未来",
+    "lead": "希皮实验室（Xipi Labs）专注于构建实用、易用、富有创意的 AI 应用，赋能个人与企业的创造力。",
+    "browse_products": "浏览我们的 AI 产品",
+    "learn_philosophy": "了解我们的理念",
+    "brand_slogan": "用 AI 探索创意与未来",
+    "core_products_title": "核心产品矩阵",
+    "core_products_subtitle": "聚焦教育娱乐、开发者工具与图像效率三大方向。",
+    "product1_title": "TaleWeaver：AI 亲子绘本阅读",
+    "product1_description": "释放您和孩子的想象力。仅需一个主题，即可一键生成故事、配图和专业排版的精美绘本，并支持多种声音阅读。",
+    "product2_title": "XiPi Studio：AI 工坊",
+    "product2_description": "面向开发者与创意团队的 AI 原型平台，提供所见即所得的流程编排、调试与导出能力，帮助创意快速落地。",
+    "product3_title": "PSEver：AI 智能橡皮擦",
+    "product3_description": "一键擦除照片中多余元素并智能填充背景，实现像素级无痕修复，帮助摄影、电商团队提效。"
+  },
+  "Header": {
+    "login": "登录",
+    "logout": "登出",
+    "loading": "加载中..."
+  },
+  "AuthNavMenu": {
+    "login": "登录",
+    "logout": "登出",
+    "home": "首页",
+    "about_us": "关于我们",
+    "ai_products_matrix": "AI 产品矩阵",
+    "ai_and_education": "AI 与教育",
+    "join_us": "加入我们",
+    "loading": "加载中..."
+  },
+  "LoginPage": {
+    "back_to_home": "返回主页"
+  },
+  "LoginForm": {
+    "send_code_failed": "发送验证码失败",
+    "verify_code_failed": "验证码错误",
+    "welcome_back": "欢迎回来",
+    "choose_login_method": "选择您的登录方式",
+    "phone_login": "手机号登录",
+    "login_with_google": "通过 Google 登录",
+    "login_with_wechat_unavailable": "通过微信登录 (暂未开放)",
+    "back": "返回",
+    "phone_login_title": "手机号登录",
+    "code_sent_to_phone": "验证码已发送至 {phone}",
+    "enter_phone_to_receive_code": "请输入您的手机号以接收验证码",
+    "phone_number_placeholder": "手机号",
+    "code_placeholder": "6位验证码",
+    "logging_in": "登录中...",
+    "login_button": "登录",
+    "sending_code": "发送中...",
+    "send_code_button": "发送验证码"
+  }
+}

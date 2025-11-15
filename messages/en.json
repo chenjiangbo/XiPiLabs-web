@@ -1,0 +1,54 @@
+{
+  "HomePage": {
+    "slogan": "Exploring Creativity and the<br></br>Future with AI",
+    "lead": "Xipi Labs focuses on building practical, user-friendly, and creative AI applications that empower the creativity of individuals and businesses.",
+    "browse_products": "Browse Our AI Products",
+    "learn_philosophy": "Learn about our philosophy",
+    "brand_slogan": "Exploring Creativity and the Future with AI",
+    "core_products_title": "Core Product Matrix",
+    "core_products_subtitle": "Focusing on education & entertainment, developer tools, and image efficiency.",
+    "product1_title": "TaleWeaver: AI Parent-Child Picture Book Reading",
+    "product1_description": "Unleash your and your child's imagination. With just one theme, generate beautifully illustrated picture books with professional layouts and support for multiple voice readings.",
+    "product2_title": "XiPi Studio: AI Workshop",
+    "product2_description": "An AI prototyping platform for developers and creative teams, offering visual workflow orchestration, debugging, and export capabilities to quickly bring ideas to life.",
+    "product3_title": "PSEver: AI Smart Eraser",
+    "product3_description": "One-click removal of unwanted elements from photos with intelligent background filling, achieving pixel-perfect, seamless restoration to boost efficiency for photography and e-commerce teams."
+  },
+  "Header": {
+    "login": "Login",
+    "logout": "Logout",
+    "loading": "Loading..."
+  },
+  "AuthNavMenu": {
+    "login": "Login",
+    "logout": "Logout",
+    "home": "Home",
+    "about_us": "About Us",
+    "ai_products_matrix": "AI Product Matrix",
+    "ai_and_education": "AI and Education",
+    "join_us": "Join Us",
+    "loading": "Loading..."
+  },
+  "LoginPage": {
+    "back_to_home": "Back to Home"
+  },
+  "LoginForm": {
+    "send_code_failed": "Failed to send verification code",
+    "verify_code_failed": "Incorrect verification code",
+    "welcome_back": "Welcome Back",
+    "choose_login_method": "Choose your login method",
+    "phone_login": "Login with Phone Number",
+    "login_with_google": "Login with Google",
+    "login_with_wechat_unavailable": "Login with WeChat (Unavailable)",
+    "back": "Back",
+    "phone_login_title": "Login with Phone Number",
+    "code_sent_to_phone": "Verification code sent to {phone}",
+    "enter_phone_to_receive_code": "Please enter your phone number to receive a verification code",
+    "phone_number_placeholder": "Phone Number",
+    "code_placeholder": "6-digit code",
+    "logging_in": "Logging in...",
+    "login_button": "Login",
+    "sending_code": "Sending...",
+    "send_code_button": "Send Code"
+  }
+}

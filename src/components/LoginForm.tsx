@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { useTranslations } from 'next-intl'; // Added import
 
 // --- Reusable Icon Components ---
 const GoogleIcon = () => (
@@ -30,6 +31,7 @@ export default function LoginForm() {
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
     const [redirectUrl, setRedirectUrl] = useState('/');
+    const t = useTranslations('LoginForm'); // Added useTranslations hook
 
     useEffect(() => {
         const params = new URLSearchParams(window.location.search);
@@ -47,7 +49,7 @@ export default function LoginForm() {
                 body: JSON.stringify({ phone }),
             });
             const data = await res.json();
-            if (!res.ok) throw new Error(data.error || '发送验证码失败');
+            if (!res.ok) throw new Error(data.error || t('send_code_failed'));
             setIsCodeSent(true);
         } catch (err: any) {
             setError(err.message);
@@ -66,7 +68,7 @@ export default function LoginForm() {
                 body: JSON.stringify({ phone, code }),
             });
             const data = await res.json();
-            if (!res.ok) throw new Error(data.error || '验证码错误');
+            if (!res.ok) throw new Error(data.error || t('verify_code_failed'));
             window.location.href = redirectUrl;
         } catch (err: any) {
             setError(err.message);
@@ -83,20 +85,20 @@ export default function LoginForm() {
 
     const renderSelectionView = () => (
         <div className={`login-view ${view === 'select' ? 'is-active' : 'is-exiting'}`}>
-            <h2 className="login-title">欢迎回来</h2>
-            <p className="login-subtitle">选择您的登录方式</p>
+            <h2 className="login-title">{t('welcome_back')}</h2>
+            <p className="login-subtitle">{t('choose_login_method')}</p>
             <div className="login-actions">
                 <button className="login-button login-button--option" onClick={() => setView('phone')}>
                     <PhoneIcon />
-                    <span>手机号登录</span>
+                    <span>{t('phone_login')}</span>
                 </button>
                 <a href={`/api/auth/google?redirect_url=${encodeURIComponent(redirectUrl)}`} className="login-button login-button--option">
                     <GoogleIcon />
-                    <span>通过 Google 登录</span>
+                    <span>{t('login_with_google')}</span>
                 </a>
                 <button className="login-button login-button--option login-button--disabled" disabled>
                     <WechatIcon />
-                    <span>通过微信登录 (暂未开放)</span>
+                    <span>{t('login_with_wechat_unavailable')}</span>
                 </button>
             </div>
         </div>
@@ -106,16 +108,18 @@ export default function LoginForm() {
         <div className={`login-view ${view === 'phone' ? 'is-active' : 'is-entering'}`}>
             <button onClick={resetToSelect} className="login-back-button">
                 <BackIcon />
-                <span>返回</span>
+                <span>{t('back')}</span>
             </button>
-            <h2 className="login-title">手机号登录</h2>
-            <p className="login-subtitle">{isCodeSent ? `验证码已发送至 ${phone}` : '请输入您的手机号以接收验证码'}</p>
+            <h2 className="login-title">{t('phone_login_title')}</h2>
+            <p className="login-subtitle">
+                {isCodeSent ? t('code_sent_to_phone', { phone }) : t('enter_phone_to_receive_code')}
+            </p>
             <div className="login-form-fields">
                 <input
                     type="tel"
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
-                    placeholder="手机号"
+                    placeholder={t('phone_number_placeholder')}
                     className="login-input"
                     disabled={isCodeSent || loading}
                 />
@@ -125,17 +129,17 @@ export default function LoginForm() {
                             type="text"
                             value={code}
                             onChange={(e) => setCode(e.target.value)}
-                            placeholder="6位验证码"
+                            placeholder={t('code_placeholder')}
                             className="login-input"
                             disabled={loading}
                         />
                         <button onClick={handleVerifyCode} className="login-button login-button--primary" disabled={loading}>
-                            {loading ? '登录中...' : '登录'}
+                            {loading ? t('logging_in') : t('login_button')}
                         </button>
                     </>
                 ) : (
                     <button onClick={handleSendCode} className="login-button login-button--primary" disabled={loading}>
-                        {loading ? '发送中...' : '发送验证码'}
+                        {loading ? t('sending_code') : t('send_code_button')}
                     </button>
                 )}
             </div>

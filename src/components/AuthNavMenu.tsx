@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { useTranslations } from 'next-intl';
+import LanguageSwitcher from "./LanguageSwitcher"; // Added import
 
 // Define the user type based on expected API response
 interface User {
@@ -50,6 +52,7 @@ const LogoutIcon = () => (
 export default function AuthNavMenu() {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const t = useTranslations('AuthNavMenu'); // Added useTranslations hook
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -85,14 +88,14 @@ export default function AuthNavMenu() {
 
   return (
     <nav className="showcase__menu">
-      <a href="#">Home</a>
-      <a href="#about">关于我们</a>
-      <a href="#ai-products">AI 产品矩阵</a>
-      <a href="#ai-education">AI 与教育</a>
+      <a href="#">{t('home')}</a>
+      <a href="#about">{t('about_us')}</a>
+      <a href="#ai-products">{t('ai_products_matrix')}</a>
+      <a href="#ai-education">{t('ai_and_education')}</a>
       
       <div className="showcase__auth-links">
         {loading ? (
-          <span className="auth-link-placeholder">...</span>
+          <span className="auth-link-placeholder">{t('loading')}</span>
         ) : user ? (
           <>
             <span className="auth-user-info">
@@ -101,13 +104,13 @@ export default function AuthNavMenu() {
               </span>
               <span className="auth-user-name">{user.displayName}</span>
             </span>
-            <button onClick={handleLogout} className="auth-icon-button" aria-label="Logout">
+            <button onClick={handleLogout} className="auth-icon-button" aria-label={t('logout')}>
               <LogoutIcon />
             </button>
           </>
         ) : (
           <Link href="/login" className="auth-login-link">
-            加入我们
+            {t('join_us')}
           </Link>
         )}
       </div>

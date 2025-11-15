@@ -1,6 +1,7 @@
 import type { CSSProperties } from "react";
 import LoginForm from "@/components/LoginForm";
 import Link from "next/link";
+import { useTranslations } from 'next-intl'; // Added import
 
 // Replicate the hero images array from the main page
 const heroImages = [
@@ -21,6 +22,7 @@ const heroImages = [
 ] as const;
 
 export default function LoginPage() {
+  const t = useTranslations('LoginPage'); // Added useTranslations hook
   // Randomly select a hero image
   const heroArt = heroImages[Math.floor(Math.random() * heroImages.length)];
   const heroCardStyle = {
@@ -47,7 +49,7 @@ export default function LoginPage() {
               </span>
               <div className="showcase__brand-text">
                 <span className="showcase__brand-name">XiPi Labs</span>
-                <small className="showcase__brand-slogan">返回主页</small>
+                <small className="showcase__brand-slogan">{t('back_to_home')}</small>
               </div>
             </Link>
           </div>
