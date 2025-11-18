@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import jwt from 'jsonwebtoken';
 import { v4 as uuidv4 } from 'uuid';
 import { createPublicKey } from 'crypto';
+import type { JsonWebKey } from 'crypto';
 import { prisma } from '@/lib/prisma';
 import { consumeOAuthState, DEFAULT_REDIRECT_URL } from '@/lib/oauth';
 import { users } from '@prisma/client';

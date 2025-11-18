@@ -85,9 +85,6 @@ export default async function Home({ params }: { params: Promise<{locale:string}
                   <a className="showcase__button showcase__button--primary" href="#ai-products">
                     {t('browse_products')}
                   </a>
-                  <a className="showcase__button showcase__button--ghost" href="#philosophy">
-                    {t('learn_philosophy')}
-                  </a>
                 </div>
               </div>
             </div>
