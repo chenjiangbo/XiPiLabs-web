@@ -33,22 +33,10 @@
     "back_to_home": "Back to Home"
   },
   "LoginForm": {
-    "send_code_failed": "Failed to send verification code",
-    "verify_code_failed": "Incorrect verification code",
     "welcome_back": "Welcome Back",
     "choose_login_method": "Choose your login method",
-    "phone_login": "Login with Phone Number",
-    "login_with_google": "Login with Google",
-    "login_with_wechat_unavailable": "Login with WeChat (Unavailable)",
-    "back": "Back",
-    "phone_login_title": "Login with Phone Number",
-    "code_sent_to_phone": "Verification code sent to {phone}",
-    "enter_phone_to_receive_code": "Please enter your phone number to receive a verification code",
-    "phone_number_placeholder": "Phone Number",
-    "code_placeholder": "6-digit code",
-    "logging_in": "Logging in...",
-    "login_button": "Login",
-    "sending_code": "Sending...",
-    "send_code_button": "Send Code"
+    "login_with_google": "Continue with Google",
+    "login_with_apple": "Continue with Apple",
+    "login_with_apple_coming_soon": "Apple Login (Coming Soon)"
   }
 }

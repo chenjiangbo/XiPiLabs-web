@@ -10,7 +10,7 @@
 
 - **认证中心 (Auth Center)**
   - **服务**: `www.xipilabs.com`
-  - **职责**: 提供统一的登录界面 (`/login`)，处理所有第三方登录（Google、手机等）的回调，管理用户数据，并在用户成功登录后，签发含有身份信息的 JWT (JSON Web Token)。
+  - **职责**: 提供统一的登录界面 (`/login`)，处理所有 OAuth 登录（当前为 Google、Apple）的回调，管理用户数据，并在用户成功登录后，签发含有身份信息的 JWT (JSON Web Token)。
 
 - **认证网关 (Auth Gateway)**
   - **服务**: `gateway.xipilabs.com` (即 `xipilabs-gateway` 项目)
@@ -184,3 +184,29 @@ function LogoutButton() {
 
 ---
 遵循以上步骤，您的新应用即可平滑地集成到 XipiLabs 的统一认证体系中。
+
+## 5. 登录方式与配置
+
+目前认证中心仅支持 **Google** 与 **Apple** 两种登录方式，手机号 / 微信入口已经下线。为保证 SSO 能稳定运行，需要在部署前准备好以下环境变量：
+
+### 通用
+
+- `JWT_SECRET`：用于签发 `auth-token` Cookie 的对称秘钥。
+- `REDIS_URL`：OAuth 状态追踪与 CSRF 校验使用的 Redis 连接。
+- `DEFAULT_REDIRECT_URL` *(可选)*：未提供 `redirect_url` 时默认跳转地址，默认为 `https://www.xipilabs.com`。
+
+### Google 登录
+
+- `GOOGLE_CLIENT_ID`
+- `GOOGLE_CLIENT_SECRET`
+- `GOOGLE_REDIRECT_URI`（通常为 `https://www.xipilabs.com/api/auth/callback/google`）
+
+### Apple 登录
+
+- `APPLE_CLIENT_ID`（Services ID）
+- `APPLE_TEAM_ID`
+- `APPLE_KEY_ID`
+- `APPLE_PRIVATE_KEY`（P8 文件内容，单行保存时注意使用 `\n` 转义换行）
+- `APPLE_REDIRECT_URI`（通常为 `https://www.xipilabs.com/api/auth/callback/apple`）
+
+> **提示**：如果 Apple 开发者账号尚未开通，访问 Apple 登录入口会提示“Apple 登录尚未开放”。待账号准备好并补齐上述配置后即可自动启用，无需再次修改代码。

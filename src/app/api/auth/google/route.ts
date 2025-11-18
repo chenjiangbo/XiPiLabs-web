@@ -1,7 +1,7 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { OAuth2Client } from 'google-auth-library';
-import Redis from 'ioredis';
 import { randomBytes } from 'crypto';
+import { sanitizeRedirectUrl, storeOAuthState } from '@/lib/oauth';
 
 // Helper to get environment variables with a fallback.
 function getEnvVar(name: string): string {
@@ -12,9 +12,10 @@ function getEnvVar(name: string): string {
     return value;
 }
 
-export async function GET() {
+export async function GET(req: NextRequest) {
     console.log('[Google Auth Start] - Received request');
     try {
+        const redirectUrl = sanitizeRedirectUrl(req.nextUrl.searchParams.get('redirect_url'));
         // --- 1. Configuration ---
         console.log('[Google Auth Start] - Loading environment variables...');
         const googleClientId = getEnvVar('GOOGLE_CLIENT_ID');
@@ -26,9 +27,6 @@ export async function GET() {
         const redirectUri = getEnvVar('GOOGLE_REDIRECT_URI');
         console.log(`[Google Auth Start] - GOOGLE_REDIRECT_URI: ${redirectUri ? 'Loaded' : 'MISSING'}`);
 
-        const redisUrl = getEnvVar('REDIS_URL');
-        console.log(`[Google Auth Start] - REDIS_URL: ${redisUrl ? 'Loaded' : 'MISSING'}`);
-        
         console.log('[Google Auth Start] - All environment variables loaded.');
 
         // --- 2. Initialize Clients ---
@@ -38,23 +36,11 @@ export async function GET() {
             redirectUri
         );
 
-        let redis;
-        try {
-            console.log('[Google Auth Start] - Connecting to Redis...');
-            redis = new Redis(redisUrl);
-            console.log('[Google Auth Start] - Redis connection initiated.');
-        } catch (redisError) {
-            console.error('[Google Auth Start] - Failed to connect to Redis', redisError);
-            throw new Error('Redis connection failed');
-        }
-
         // --- 3. Create State for CSRF Protection ---
         const state = randomBytes(16).toString('hex');
         console.log(`[Google Auth Start] - Generated state for CSRF: ${state}`);
-        // Store the state in Redis with a 10-minute expiration
-        await redis.set(state, 'true', 'EX', 600);
+        await storeOAuthState('google', state, { redirectUrl });
         console.log('[Google Auth Start] - Stored state in Redis.');
-        await redis.quit();
 
         // --- 4. Generate Google Auth URL ---
         const authorizeUrl = oauth2Client.generateAuthUrl({

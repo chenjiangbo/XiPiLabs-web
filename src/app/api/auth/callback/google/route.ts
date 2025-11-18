@@ -1,11 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { OAuth2Client, TokenPayload } from 'google-auth-library';
-import Redis from 'ioredis';
 import jwt from 'jsonwebtoken';
-import { cookies } from 'next/headers';
 import { v4 as uuidv4 } from 'uuid';
 import { prisma } from '@/lib/prisma';
-import { users, auth_identities } from '@prisma/client';
+import { users } from '@prisma/client';
+import { consumeOAuthState, DEFAULT_REDIRECT_URL } from '@/lib/oauth';
 
 /**
  * Finds an existing user by email or creates a new one. Also creates or updates
@@ -105,15 +104,13 @@ export async function GET(req: NextRequest) {
         return NextResponse.json({ error: 'Invalid request' }, { status: 400 });
     }
 
-    const redis = new Redis(getEnvVar('REDIS_URL'));
-
     try {
         // --- 1. Verify State (CSRF Protection) ---
-        const storedState = await redis.get(state);
-        if (!storedState) {
+        const session = await consumeOAuthState('google', state);
+        if (!session) {
             throw new Error('Invalid state. CSRF attack suspected.');
         }
-        await redis.del(state); // State should only be used once
+        const redirectUrl = session.redirectUrl || DEFAULT_REDIRECT_URL;
 
         // --- 2. Exchange Code for Tokens ---
         const oauth2Client = new OAuth2Client(
@@ -157,8 +154,7 @@ export async function GET(req: NextRequest) {
         );
 
         // --- 6. Create response, set cookie, and redirect ---
-        const finalRedirectUrl = 'https://www.xipilabs.com';
-        const response = NextResponse.redirect(finalRedirectUrl);
+        const response = NextResponse.redirect(redirectUrl);
 
         response.cookies.set('auth-token', authToken, {
             domain: '.xipilabs.com',
@@ -178,7 +174,5 @@ export async function GET(req: NextRequest) {
             { error: 'Authentication failed', details: errorMessage },
             { status: 500 }
         );
-    } finally {
-        await redis.quit();
     }
 }
