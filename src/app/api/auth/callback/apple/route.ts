@@ -4,8 +4,9 @@ import { v4 as uuidv4 } from 'uuid';
 import { createPublicKey } from 'crypto';
 import type { JsonWebKey } from 'crypto';
 import { prisma } from '@/lib/prisma';
-import { consumeOAuthState, DEFAULT_REDIRECT_URL } from '@/lib/oauth';
+import { consumeOAuthState, DEFAULT_REDIRECT_URL, appendQueryParams, isCustomSchemeUrl } from '@/lib/oauth';
 import { users } from '@prisma/client';
+import { issueAuthToken, buildCookieOptions } from '@/lib/auth-token';
 
 interface AppleTokenResponse {
     access_token: string;
@@ -224,27 +225,6 @@ async function upsertAppleUser(profile: AppleProfile): Promise<users> {
     return user;
 }
 
-function buildAuthTokenPayload(user: users, displayName?: string) {
-    return {
-        sub: user.id,
-        email: user.email || undefined,
-        name: displayName || user.email || undefined,
-        iss: 'xipilabs-auth',
-        aud: 'xipilabs-products',
-    };
-}
-
-function buildCookieOptions() {
-    return {
-        domain: '.xipilabs.com',
-        path: '/',
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'none' as const,
-        maxAge: 60 * 60 * 24 * 7,
-    };
-}
-
 async function handleCallback(params: URLSearchParams) {
     const code = params.get('code');
     const state = params.get('state');
@@ -277,12 +257,18 @@ async function handleCallback(params: URLSearchParams) {
 
         const user = await upsertAppleUser(profile);
 
-        const jwtSecret = getEnvVar('JWT_SECRET');
-        const authToken = jwt.sign(buildAuthTokenPayload(user, profile.name), jwtSecret, {
-            expiresIn: '7d',
-        });
+        const authToken = issueAuthToken(user, profile.name);
 
-        const response = NextResponse.redirect(redirectUrl);
+        let destination = redirectUrl;
+        if (isCustomSchemeUrl(redirectUrl)) {
+            destination = appendQueryParams(redirectUrl, {
+                token: authToken,
+                user_id: user.id,
+                email: user.email ?? undefined,
+            });
+        }
+
+        const response = NextResponse.redirect(destination);
         response.cookies.set('auth-token', authToken, buildCookieOptions());
         return response;
     } catch (error) {

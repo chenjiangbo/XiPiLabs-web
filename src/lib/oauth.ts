@@ -17,6 +17,14 @@ export interface OAuthStatePayload {
     redirectUrl: string;
 }
 
+function parseUrl(raw: string): URL | null {
+    try {
+        return new URL(raw);
+    } catch {
+        return null;
+    }
+}
+
 function getRedisUrl(): string {
     const url = process.env.REDIS_URL;
     if (!url) {
@@ -84,3 +92,28 @@ export async function consumeOAuthState(provider: string, state: string): Promis
 }
 
 export { DEFAULT_REDIRECT_URL };
+
+export function isCustomSchemeUrl(raw: string): boolean {
+    const parsed = parseUrl(raw);
+    if (!parsed) {
+        return false;
+    }
+    const scheme = parsed.protocol.replace(':', '');
+    return CUSTOM_SCHEMES.has(scheme);
+}
+
+export function appendQueryParams(raw: string, params: Record<string, string | undefined>): string {
+    const parsed = parseUrl(raw);
+    if (!parsed) {
+        return raw;
+    }
+    const search = new URLSearchParams(parsed.search);
+    Object.entries(params).forEach(([key, value]) => {
+        if (value === undefined || value === null || value === '') {
+            return;
+        }
+        search.set(key, value);
+    });
+    parsed.search = search.toString();
+    return parsed.toString();
+}

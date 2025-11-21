@@ -1,22 +1,16 @@
 import { NextRequest, NextResponse } from 'next/server';
-import jwt from 'jsonwebtoken';
 import { prisma } from '@/lib/prisma';
+import { getAuthTokenFromRequest, verifyAuthToken, resolveLatestIdentity } from '@/lib/auth-token';
 
 export async function GET(req: NextRequest) {
-    const token = req.cookies.get('auth-token')?.value;
+    const token = getAuthTokenFromRequest(req);
 
     if (!token) {
         return NextResponse.json({ error: 'Not authenticated' }, { status: 401 });
     }
 
-    const jwtSecret = process.env.JWT_SECRET;
-    if (!jwtSecret) {
-        console.error('JWT_SECRET is not defined');
-        return NextResponse.json({ error: 'Internal server configuration error' }, { status: 500 });
-    }
-
     try {
-        const payload = jwt.verify(token, jwtSecret) as { sub: string };
+        const payload = verifyAuthToken(token);
         const userId = payload.sub;
 
         if (!userId || typeof userId !== 'string') {
@@ -40,14 +34,14 @@ export async function GET(req: NextRequest) {
             return NextResponse.json({ error: 'User not found' }, { status: 404 });
         }
 
-        const latestIdentity = user.auth_identities && user.auth_identities.length > 0 ? user.auth_identities[0] : null;
+        const latestIdentity = resolveLatestIdentity(user.auth_identities);
 
         const userData = {
             id: user.id,
             email: user.email,
             phone: user.phone,
-            displayName: latestIdentity?.display_name || user.email, // Fallback to email if display name is not set
-            avatarUrl: latestIdentity?.avatar_url,
+            displayName: latestIdentity.displayName || user.email,
+            avatarUrl: latestIdentity.avatarUrl,
         };
 
         return NextResponse.json(userData);

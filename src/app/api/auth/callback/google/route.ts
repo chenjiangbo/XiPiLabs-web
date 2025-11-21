@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { OAuth2Client, TokenPayload } from 'google-auth-library';
-import jwt from 'jsonwebtoken';
 import { v4 as uuidv4 } from 'uuid';
 import { prisma } from '@/lib/prisma';
 import { users } from '@prisma/client';
-import { consumeOAuthState, DEFAULT_REDIRECT_URL } from '@/lib/oauth';
+import { consumeOAuthState, DEFAULT_REDIRECT_URL, appendQueryParams, isCustomSchemeUrl } from '@/lib/oauth';
+import { issueAuthToken, buildCookieOptions } from '@/lib/auth-token';
 
 /**
  * Finds an existing user by email or creates a new one. Also creates or updates
@@ -139,31 +139,21 @@ export async function GET(req: NextRequest) {
         const user = await upsertGoogleUser(payload);
 
         // --- 5. Sign Your Own JWT ---
-        const jwtSecret = getEnvVar('JWT_SECRET');
-        const authToken = jwt.sign(
-            {
-                sub: user.id, // Use 'sub' for subject, a standard JWT claim
-                email: user.email,
-                name: payload.name,
-                picture: payload.picture,
-                iss: 'xipilabs-auth',
-                aud: 'xipilabs-products', // Add audience claim
-            },
-            jwtSecret,
-            { expiresIn: '7d' } // Token valid for 7 days
-        );
+        const authToken = issueAuthToken(user, payload.name || undefined);
+
+        let destination = redirectUrl;
+        if (isCustomSchemeUrl(redirectUrl)) {
+            destination = appendQueryParams(redirectUrl, {
+                token: authToken,
+                user_id: user.id,
+                email: user.email ?? undefined,
+            });
+        }
 
         // --- 6. Create response, set cookie, and redirect ---
-        const response = NextResponse.redirect(redirectUrl);
+        const response = NextResponse.redirect(destination);
 
-        response.cookies.set('auth-token', authToken, {
-            domain: '.xipilabs.com',
-            path: '/',
-            httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
-            sameSite: 'none', // Use 'none' for cross-site cookie sending
-            maxAge: 60 * 60 * 24 * 7, // 7 days in seconds
-        });
+        response.cookies.set('auth-token', authToken, buildCookieOptions());
 
         return response;
 
