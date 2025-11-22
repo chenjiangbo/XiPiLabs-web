@@ -92,6 +92,11 @@ jobs:
             echo "ALIYUN_SMS_TEMPLATE_CODE=${{ secrets.ALIYUN_SMS_TEMPLATE_CODE }}" >> .env
             echo "ALIYUN_SMS_REGION=${{ secrets.ALIYUN_SMS_REGION }}" >> .env
             echo "OTP_DEV_MODE=${{ secrets.OTP_DEV_MODE }}" >> .env
+            echo "APPLE_CLIENT_ID=${{ secrets.APPLE_CLIENT_ID }}" >> .env
+            echo "APPLE_TEAM_ID=${{ secrets.APPLE_TEAM_ID }}" >> .env
+            echo "APPLE_KEY_ID=${{ secrets.APPLE_KEY_ID }}" >> .env
+            echo "APPLE_PRIVATE_KEY=${{ secrets.APPLE_PRIVATE_KEY }}" >> .env
+            echo "APPLE_REDIRECT_URI=${{ secrets.APPLE_REDIRECT_URI }}" >> .env
             
             docker compose pull
             docker compose up -d
