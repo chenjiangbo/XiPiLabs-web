@@ -3,8 +3,6 @@
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 
-const APPLE_LOGIN_ENABLED = process.env.NEXT_PUBLIC_APPLE_LOGIN_ENABLED === 'true';
-
 const GoogleIcon = () => (
     <svg viewBox="0 0 48 48" width="24" height="24">
         <path
@@ -58,17 +56,10 @@ export default function LoginForm() {
                             <GoogleIcon />
                             <span>{t('login_with_google')}</span>
                         </a>
-                        {APPLE_LOGIN_ENABLED ? (
-                            <a href={appleHref} className="login-button login-button--option">
-                                <AppleIcon />
-                                <span>{t('login_with_apple')}</span>
-                            </a>
-                        ) : (
-                            <button className="login-button login-button--option login-button--disabled" disabled>
-                                <AppleIcon />
-                                <span>{t('login_with_apple_coming_soon')}</span>
-                            </button>
-                        )}
+                        <a href={appleHref} className="login-button login-button--option">
+                            <AppleIcon />
+                            <span>{t('login_with_apple')}</span>
+                        </a>
                     </div>
                 </div>
             </div>
