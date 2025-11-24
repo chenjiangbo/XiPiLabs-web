@@ -157,6 +157,7 @@ function parseAppleUser(raw: string | null): { name?: string; email?: string } {
 
 async function upsertAppleUser(profile: AppleProfile): Promise<users> {
     const now = new Date();
+    const displayName = profile.name || (profile.email ? profile.email.split('@')[0] : undefined);
 
     const existingIdentity = await prisma.auth_identities.findFirst({
         where: {
@@ -169,7 +170,7 @@ async function upsertAppleUser(profile: AppleProfile): Promise<users> {
         await prisma.auth_identities.update({
             where: { id: existingIdentity.id },
             data: {
-                display_name: profile.name,
+                display_name: displayName,
                 updated_at: now,
             },
         });
@@ -216,7 +217,7 @@ async function upsertAppleUser(profile: AppleProfile): Promise<users> {
             user_id: user.id,
             provider: 'apple',
             provider_uid: profile.sub,
-            display_name: profile.name,
+            display_name: displayName,
             created_at: now,
             updated_at: now,
         },

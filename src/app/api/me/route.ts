@@ -40,7 +40,7 @@ export async function GET(req: NextRequest) {
             id: user.id,
             email: user.email,
             phone: user.phone,
-            displayName: latestIdentity.displayName || user.email,
+            displayName: latestIdentity.displayName || payload.name || user.email,
             avatarUrl: latestIdentity.avatarUrl,
         };
 

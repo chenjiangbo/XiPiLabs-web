@@ -23,7 +23,6 @@ export async function GET(req: NextRequest) {
 
         const query = new URLSearchParams({
             response_type: 'code',
-            response_mode: 'form_post',
             client_id: clientId,
             redirect_uri: redirectUri,
             scope: 'name email',
