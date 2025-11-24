@@ -77,10 +77,8 @@ export default function AuthNavMenu() {
 
   const handleLogout = async () => {
     try {
-      await fetch("/api/logout");
-      setUser(null);
-      // Optionally, redirect to home or refresh
-      window.location.href = "/";
+      // 直接跳转退出，避免跨域 fetch + 重定向触发 CORS
+      window.location.href = "/api/logout";
     } catch (error) {
       console.error("Logout failed:", error);
     }
