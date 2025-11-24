@@ -269,9 +269,14 @@ async function handleCallback(params: URLSearchParams) {
             });
         }
 
-        const response = NextResponse.redirect(destination);
+        const response = new NextResponse(null, {
+            status: 303,
+            headers: {
+                Location: destination,
+            },
+        });
         response.cookies.set('auth-token', authToken, buildCookieOptions());
-        return NextResponse.redirect(destination, { status: 302 });
+        return response;
     } catch (error) {
         console.error('[Apple Callback Error]', error);
         const message = error instanceof Error ? error.message : 'Unknown Apple callback error';
