@@ -7,24 +7,21 @@ export async function GET() {
         const homeUrl = new URL('/', process.env.NEXT_PUBLIC_BASE_URL || 'https://www.xipilabs.com');
         const response = NextResponse.redirect(homeUrl);
 
-        // To delete a cookie, we set its value to empty and maxAge to 0.
-        // It's crucial to provide the same domain and path attributes.
-        response.cookies.set('auth-token', '', {
-            domain: '.xipilabs.com',
-            path: '/',
-            httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
-            sameSite: 'none',
-            maxAge: 0, // Set maxAge to 0 to expire the cookie immediately
-        });
-        // 补充按子域删除，避免浏览器因 domain 匹配策略遗留 Cookie
-        response.cookies.set('auth-token', '', {
-            domain: 'www.xipilabs.com',
-            path: '/',
-            httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
-            sameSite: 'none',
-            maxAge: 0,
+        // 手动附加 Set-Cookie，覆盖所有可能的 domain 变体，避免浏览器属性不匹配导致残留。
+        const baseFlags = 'Path=/; HttpOnly; Max-Age=0; SameSite=None';
+        const secure = process.env.NODE_ENV === 'production' ? '; Secure' : '';
+
+        const variants = [
+            '.xipilabs.com',
+            'www.xipilabs.com',
+            'xipilabs.com',
+        ];
+
+        variants.forEach((domain) => {
+            response.headers.append(
+                'Set-Cookie',
+                `auth-token=; Domain=${domain}; ${baseFlags}${secure}`
+            );
         });
 
         return response;
