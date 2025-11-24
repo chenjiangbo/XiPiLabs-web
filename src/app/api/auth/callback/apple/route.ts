@@ -280,6 +280,10 @@ async function handleCallback(params: URLSearchParams) {
 }
 
 export async function POST(req: NextRequest) {
+    console.log('[Apple Callback] request headers', {
+        origin: req.headers.get('origin'),
+        xForwardedHost: req.headers.get('x-forwarded-host'),
+    });
     const contentType = req.headers.get('content-type') || '';
     if (contentType.includes('application/x-www-form-urlencoded')) {
         const body = await req.text();
@@ -302,5 +306,9 @@ export async function POST(req: NextRequest) {
 }
 
 export async function GET(req: NextRequest) {
+    console.log('[Apple Callback] request headers', {
+        origin: req.headers.get('origin'),
+        xForwardedHost: req.headers.get('x-forwarded-host'),
+    });
     return handleCallback(req.nextUrl.searchParams);
 }
