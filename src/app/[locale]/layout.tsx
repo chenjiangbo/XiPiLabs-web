@@ -8,9 +8,9 @@ export const metadata: Metadata = {
   description:
     "Xipi Labs 官方展示页，聚焦沉浸式数字体验与产品工程共创。",
   icons: {
-    icon: "/xipi-logo12.png",
-    shortcut: "/xipi-logo12.png",
-    apple: "/xipi-logo12.png",
+    icon: "/xipi-logo12.webp",
+    shortcut: "/xipi-logo12.webp",
+    apple: "/xipi-logo12.webp",
   },
 };
 

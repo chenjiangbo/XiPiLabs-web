@@ -130,7 +130,7 @@ main > .content-section:first-child {
   right: clamp(24px, 3.8vw, 62px);
   width: clamp(380px, 46vw, 620px);
   aspect-ratio: 3 / 2;
-  background: var(--hero-art, url("/cover_random/hero1.png"));
+  background: var(--hero-art, url("/cover_random/hero1.webp"));
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;

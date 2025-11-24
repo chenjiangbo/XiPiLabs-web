@@ -5,20 +5,20 @@ import { useTranslations } from 'next-intl'; // Added import
 
 // Replicate the hero images array from the main page
 const heroImages = [
-  "/cover_random/hero1.png",
-  "/cover_random/hero2.png",
-  "/cover_random/hero3.png",
-  "/cover_random/hero4.png",
-  "/cover_random/hero5.png",
-  "/cover_random/hero6.png",
-  "/cover_random/hero7.png",
-  "/cover_random/hero8.png",
-  "/cover_random/hero9.png",
-  "/cover_random/hero10.png",
-  "/cover_random/hero11.png",
-  "/cover_random/hero12.png",
-  "/cover_random/hero13.png",
-  "/cover_random/hero14.png",
+  "/cover_random/hero1.webp",
+  "/cover_random/hero2.webp",
+  "/cover_random/hero3.webp",
+  "/cover_random/hero4.webp",
+  "/cover_random/hero5.webp",
+  "/cover_random/hero6.webp",
+  "/cover_random/hero7.webp",
+  "/cover_random/hero8.webp",
+  "/cover_random/hero9.webp",
+  "/cover_random/hero10.webp",
+  "/cover_random/hero11.webp",
+  "/cover_random/hero12.webp",
+  "/cover_random/hero13.webp",
+  "/cover_random/hero14.webp",
 ] as const;
 
 export default function LoginPage() {
@@ -40,7 +40,7 @@ export default function LoginPage() {
               <span className="showcase__brand-logo" aria-hidden="true">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src="/xipi-logo12.png"
+                  src="/xipi-logo12.webp"
                   alt="Xipi Labs"
                   width={92}
                   height={92}

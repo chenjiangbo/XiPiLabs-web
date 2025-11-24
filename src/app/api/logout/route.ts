@@ -14,8 +14,17 @@ export async function GET() {
             path: '/',
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
-            sameSite: 'lax',
+            sameSite: 'none',
             maxAge: 0, // Set maxAge to 0 to expire the cookie immediately
+        });
+        // 补充按子域删除，避免浏览器因 domain 匹配策略遗留 Cookie
+        response.cookies.set('auth-token', '', {
+            domain: 'www.xipilabs.com',
+            path: '/',
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'none',
+            maxAge: 0,
         });
 
         return response;
