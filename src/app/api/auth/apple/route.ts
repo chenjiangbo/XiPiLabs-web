@@ -27,6 +27,7 @@ export async function GET(req: NextRequest) {
             redirect_uri: redirectUri,
             scope: 'name email',
             state,
+            response_mode: 'form_post',
         });
 
         const authorizeUrl = `https://appleid.apple.com/auth/authorize?${query.toString()}`;
