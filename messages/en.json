@@ -25,6 +25,8 @@
     "about_us": "About Us",
     "ai_products_matrix": "AI Product Matrix",
     "ai_and_education": "AI and Education",
+    "support": "Support",
+    "privacy": "Privacy",
     "join_us": "Join Us",
     "loading": "Loading..."
   },
@@ -37,5 +39,21 @@
     "login_with_google": "Continue with Google",
     "login_with_apple": "Continue with Apple",
     "login_with_apple_coming_soon": "Apple Login (Coming Soon)"
+  },
+  "SupportPage": {
+    "title": "Support Center",
+    "subtitle": "Need help? Reach us via email or our Discord forum.",
+    "email_card_title": "Email Us",
+    "email_card_desc": "Include product name, what went wrong, and your order number/screenshot so we can assist faster.",
+    "email_cta": "xipilabs@gmail.com",
+    "discord_card_title": "Join Discord Forum",
+    "discord_card_desc": "Great for quick questions, troubleshooting, and feature ideas.",
+    "discord_more": "Hop into the community to chat with the team and other users.",
+    "discord_cta": "Open Discord",
+    "also_email": "Prefer email? Write to xipilabs@gmail.com and we’ll reply within 48 hours.",
+    "tips_title": "What helps us resolve faster",
+    "tip_refund": "Refund/top-up: include order number, payment time, and product name; screenshots help.",
+    "tip_account": "Account/login: mention your login method (Apple/Google) and any error message/screenshot.",
+    "tip_feature": "Feature ideas: describe the scenario and expected outcome to help us prioritize."
   }
 }

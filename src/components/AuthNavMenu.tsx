@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
 import LanguageSwitcher from "./LanguageSwitcher"; // Added import
 
 // Define the user type based on expected API response
@@ -53,6 +53,7 @@ export default function AuthNavMenu() {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const t = useTranslations('AuthNavMenu'); // Added useTranslations hook
+  const locale = useLocale();
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -90,6 +91,8 @@ export default function AuthNavMenu() {
       <a href="#about">{t('about_us')}</a>
       <a href="#ai-products">{t('ai_products_matrix')}</a>
       <a href="#ai-education">{t('ai_and_education')}</a>
+      <Link href={`/${locale}/support`}>{t('support')}</Link>
+      <Link href={`/${locale}/privacy`}>{t('privacy')}</Link>
       
       <div className="showcase__auth-links">
         {loading ? (

@@ -25,6 +25,8 @@
     "about_us": "关于我们",
     "ai_products_matrix": "AI 产品矩阵",
     "ai_and_education": "AI 与教育",
+    "support": "支持",
+    "privacy": "隐私政策",
     "join_us": "加入我们",
     "loading": "加载中..."
   },
@@ -37,5 +39,21 @@
     "login_with_google": "使用 Google 登录",
     "login_with_apple": "使用 Apple 登录",
     "login_with_apple_coming_soon": "Apple 登录（即将上线）"
+  },
+  "SupportPage": {
+    "title": "支持与反馈",
+    "subtitle": "遇到问题？通过邮件或 Discord 联系我们。",
+    "email_card_title": "发送邮件",
+    "email_card_desc": "请附上产品名称、问题描述，以及订单号/截图，方便我们尽快处理。",
+    "email_cta": "xipilabs@gmail.com",
+    "discord_card_title": "前往 Discord 论坛",
+    "discord_card_desc": "实时交流，适合使用问题与功能建议。",
+    "discord_more": "加入社区，与团队和其他用户一起讨论问题、分享创意。",
+    "discord_cta": "打开 Discord",
+    "also_email": "如果邮件更方便，请直接发送到 xipilabs@gmail.com，我们会在 48 小时内回复。",
+    "tips_title": "提交前建议",
+    "tip_refund": "充值/退款：请写明订单号、支付时间、产品名称；若有截图更快处理。",
+    "tip_account": "账号/登录：请说明登录方式（Apple/Google）和报错截图。",
+    "tip_feature": "功能建议：描述使用场景、期望结果，方便评估优先级。"
   }
 }
