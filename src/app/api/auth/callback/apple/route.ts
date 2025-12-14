@@ -231,12 +231,20 @@ async function handleCallback(params: URLSearchParams) {
     const state = params.get('state');
     const rawUser = params.get('user');
 
+    console.log('[Apple Callback] incoming params', {
+        codePresent: Boolean(code),
+        state,
+        rawUserPresent: Boolean(rawUser),
+    });
+
     if (!code || !state) {
+        console.warn('[Apple Callback] missing code/state', { codePresent: Boolean(code), state });
         return NextResponse.json({ error: 'Invalid Apple callback payload' }, { status: 400 });
     }
 
     const session = await consumeOAuthState('apple', state);
     if (!session) {
+        console.warn('[Apple Callback] state not found or expired', { state });
         return NextResponse.json({ error: 'Invalid or expired state' }, { status: 400 });
     }
     const redirectUrl = session.redirectUrl || DEFAULT_REDIRECT_URL;
@@ -276,6 +284,7 @@ async function handleCallback(params: URLSearchParams) {
             },
         });
         response.cookies.set('auth-token', authToken, buildCookieOptions());
+        console.log('[Apple Callback] success', { userId: user.id, destination });
         return response;
     } catch (error) {
         console.error('[Apple Callback Error]', error);
@@ -288,6 +297,7 @@ export async function POST(req: NextRequest) {
     console.log('[Apple Callback] request headers', {
         origin: req.headers.get('origin'),
         xForwardedHost: req.headers.get('x-forwarded-host'),
+        contentType: req.headers.get('content-type'),
     });
     const contentType = req.headers.get('content-type') || '';
     if (contentType.includes('application/x-www-form-urlencoded')) {
