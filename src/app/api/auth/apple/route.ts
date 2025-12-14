@@ -27,7 +27,8 @@ export async function GET(req: NextRequest) {
             redirect_uri: redirectUri,
             scope: 'name email',
             state,
-            response_mode: 'form_post',
+            // 改为 query 回调，绕过生产环境中对 form_post 的 403 拦截
+            response_mode: 'query',
         });
 
         const authorizeUrl = `https://appleid.apple.com/auth/authorize?${query.toString()}`;
