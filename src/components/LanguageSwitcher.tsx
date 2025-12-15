@@ -10,8 +10,12 @@ export default function LanguageSwitcher() {
 
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const newLocale = e.target.value;
-    // Manually construct the new path to be compatible with Next.js 16
-    const newPath = `/${newLocale}${pathname.substring(1 + locale.length)}`;
+    const path = pathname ?? '/';
+    const stripped = path.startsWith(`/${locale}`)
+      ? path.slice(locale.length + 1) || '/'
+      : path;
+    const normalized = stripped.startsWith('/') ? stripped : `/${stripped}`;
+    const newPath = `/${newLocale}${normalized === '/' ? '' : normalized}`;
     router.replace(newPath);
   };
 
