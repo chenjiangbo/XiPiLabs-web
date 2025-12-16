@@ -70,7 +70,9 @@ export function sanitizeRedirectUrl(raw: string | null): string {
 export async function storeOAuthState(provider: string, state: string, payload: OAuthStatePayload): Promise<void> {
     const redis = new Redis(getRedisUrl());
     try {
-        await redis.set(buildStateKey(provider, state), JSON.stringify(payload), 'EX', STATE_TTL_SECONDS);
+        const key = buildStateKey(provider, state);
+        await redis.set(key, JSON.stringify(payload), 'EX', STATE_TTL_SECONDS);
+        console.log(`[OAuth State] stored provider=${provider} key=${key} ttl=${STATE_TTL_SECONDS}s`);
     } finally {
         await redis.quit();
     }
@@ -82,9 +84,11 @@ export async function consumeOAuthState(provider: string, state: string): Promis
     try {
         const data = await redis.get(key);
         if (!data) {
+            console.warn(`[OAuth State] missing provider=${provider} key=${key}`);
             return null;
         }
         await redis.del(key);
+        console.log(`[OAuth State] consumed provider=${provider} key=${key}`);
         return JSON.parse(data) as OAuthStatePayload;
     } finally {
         await redis.quit();
