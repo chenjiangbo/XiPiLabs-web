@@ -13,14 +13,12 @@ FROM deps AS builder
 ARG DATABASE_URL
 ENV DATABASE_URL=$DATABASE_URL
 ENV NODE_ENV=production
-ENV NODE_OPTIONS=--conditions=react-server
 COPY . .
 RUN corepack enable && pnpm exec contentlayer build && pnpm build
 
 FROM base AS runner
 ENV NODE_ENV=production
 ENV PORT=3210
-ENV NODE_OPTIONS=--conditions=react-server
 WORKDIR /app
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/.next ./ .next
