@@ -116,7 +116,7 @@ export default async function Home({ params }: { params: Promise<{locale:string}
                   </a>
                   <a
                     className="feature-card feature-card--planned"
-                    href="https://stock.xipilabs.com"
+                    href="https://professor.xipilabs.com"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
