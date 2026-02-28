@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
+import { usePathname } from 'next/navigation';
 
 const GoogleIcon = () => (
     <svg viewBox="0 0 48 48" width="24" height="24">
@@ -44,78 +45,12 @@ function getInitialRedirect(): string {
 export default function LoginForm() {
     const [redirectUrl] = useState(getInitialRedirect);
     const t = useTranslations('LoginForm');
-    const [email, setEmail] = useState('');
-    const [code, setCode] = useState('');
-    const [emailStep, setEmailStep] = useState<'idle' | 'code'>('idle');
-    const [submitting, setSubmitting] = useState(false);
-    const [errorMessage, setErrorMessage] = useState<string | null>(null);
-    const [successMessage, setSuccessMessage] = useState<string | null>(null);
+    const pathname = usePathname();
 
     const googleHref = `/api/auth/google?redirect_url=${encodeURIComponent(redirectUrl)}`;
     const appleHref = `/api/auth/apple?redirect_url=${encodeURIComponent(redirectUrl)}`;
-
-    async function requestEmailCode() {
-        setSubmitting(true);
-        setErrorMessage(null);
-        setSuccessMessage(null);
-        try {
-            const response = await fetch('/api/auth/email/send-code', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    email,
-                    redirect_url: redirectUrl,
-                }),
-            });
-            const data = (await response.json()) as { error?: string };
-            if (!response.ok) {
-                throw new Error(data.error || t('email_send_failed'));
-            }
-            setEmailStep('code');
-            setSuccessMessage(t('email_code_sent'));
-        } catch (error) {
-            const message = error instanceof Error ? error.message : t('email_send_failed');
-            setErrorMessage(message);
-        } finally {
-            setSubmitting(false);
-        }
-    }
-
-    async function verifyEmailCode() {
-        setSubmitting(true);
-        setErrorMessage(null);
-        setSuccessMessage(null);
-        try {
-            const response = await fetch('/api/auth/email/verify-code', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    email,
-                    code,
-                }),
-            });
-            const data = (await response.json()) as { error?: string; redirect_to?: string };
-            if (!response.ok) {
-                throw new Error(data.error || t('email_verify_failed'));
-            }
-            if (!data.redirect_to) {
-                throw new Error(t('email_verify_failed'));
-            }
-            window.location.href = data.redirect_to;
-        } catch (error) {
-            const message = error instanceof Error ? error.message : t('email_verify_failed');
-            setErrorMessage(message);
-        } finally {
-            setSubmitting(false);
-        }
-    }
-
-    function resetEmailFlow() {
-        setEmailStep('idle');
-        setCode('');
-        setErrorMessage(null);
-        setSuccessMessage(null);
-    }
+    const normalizedPath = pathname.endsWith('/') ? pathname.slice(0, -1) : pathname;
+    const emailHref = `${normalizedPath}/email?redirect_url=${encodeURIComponent(redirectUrl)}`;
 
     return (
         <div className="login-container">
@@ -132,60 +67,9 @@ export default function LoginForm() {
                             <AppleIcon />
                             <span>{t('login_with_apple')}</span>
                         </a>
-                    </div>
-                    <div className="login-form-fields">
-                        <input
-                            type="email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            className="login-input"
-                            placeholder={t('email_placeholder')}
-                            autoComplete="email"
-                            disabled={submitting || emailStep === 'code'}
-                        />
-                        {emailStep === 'code' && (
-                            <input
-                                type="text"
-                                value={code}
-                                onChange={(e) => setCode(e.target.value)}
-                                className="login-input"
-                                placeholder={t('email_code_placeholder')}
-                                inputMode="numeric"
-                                maxLength={6}
-                                disabled={submitting}
-                            />
-                        )}
-                        {errorMessage && <p className="login-error">{errorMessage}</p>}
-                        {successMessage && <p className="login-subtitle">{successMessage}</p>}
-                        {emailStep === 'idle' ? (
-                            <button
-                                type="button"
-                                onClick={requestEmailCode}
-                                className="login-button login-button--primary"
-                                disabled={submitting || !email.trim()}
-                            >
-                                {submitting ? t('email_sending') : t('email_send_code')}
-                            </button>
-                        ) : (
-                            <>
-                                <button
-                                    type="button"
-                                    onClick={verifyEmailCode}
-                                    className="login-button login-button--primary"
-                                    disabled={submitting || code.trim().length !== 6}
-                                >
-                                    {submitting ? t('email_verifying') : t('email_verify_and_login')}
-                                </button>
-                                <button
-                                    type="button"
-                                    onClick={resetEmailFlow}
-                                    className="login-back-button"
-                                    disabled={submitting}
-                                >
-                                    {t('email_change_address')}
-                                </button>
-                            </>
-                        )}
+                        <a href={emailHref} className="login-button login-button--option">
+                            <span>{t('login_with_email')}</span>
+                        </a>
                     </div>
                 </div>
             </div>
