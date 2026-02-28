@@ -38,7 +38,17 @@
     "choose_login_method": "Choose your login method",
     "login_with_google": "Continue with Google",
     "login_with_apple": "Continue with Apple",
-    "login_with_apple_coming_soon": "Apple Login (Coming Soon)"
+    "login_with_apple_coming_soon": "Apple Login (Coming Soon)",
+    "email_placeholder": "Enter your email address",
+    "email_send_code": "Send verification code",
+    "email_sending": "Sending...",
+    "email_code_sent": "Verification code sent. Please check your inbox.",
+    "email_code_placeholder": "Enter 6-digit code",
+    "email_verify_and_login": "Verify and login",
+    "email_verifying": "Verifying...",
+    "email_change_address": "Use another email",
+    "email_send_failed": "Failed to send verification code",
+    "email_verify_failed": "Failed to verify code"
   },
   "SupportPage": {
     "title": "Support Center",

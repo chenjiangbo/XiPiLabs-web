@@ -98,7 +98,15 @@ jobs:
             echo "APPLE_KEY_ID=${{ secrets.APPLE_KEY_ID }}" >> .env
             echo "APPLE_PRIVATE_KEY=${APPLE_PRIVATE_KEY_ESCAPED}" >> .env
             echo "APPLE_REDIRECT_URI=${{ secrets.APPLE_REDIRECT_URI }}" >> .env
+            echo "EMAIL_SMTP_HOST=${{ secrets.EMAIL_SMTP_HOST }}" >> .env
+            echo "EMAIL_SMTP_PORT=${{ secrets.EMAIL_SMTP_PORT }}" >> .env
+            echo "EMAIL_SMTP_USER=${{ secrets.EMAIL_SMTP_USER }}" >> .env
+            echo "EMAIL_SMTP_PASS=${{ secrets.EMAIL_SMTP_PASS }}" >> .env
+            echo "EMAIL_FROM=${{ secrets.EMAIL_FROM }}" >> .env
+            echo "EMAIL_CODE_TTL_SECONDS=${{ secrets.EMAIL_CODE_TTL_SECONDS }}" >> .env
+            echo "EMAIL_CODE_COOLDOWN_SECONDS=${{ secrets.EMAIL_CODE_COOLDOWN_SECONDS }}" >> .env
+            echo "EMAIL_CODE_MAX_ATTEMPTS=${{ secrets.EMAIL_CODE_MAX_ATTEMPTS }}" >> .env
             
             docker compose pull
-            docker compose up -d
+            docker compose up -d --force-recreate --remove-orphans
             docker image prune -f
