@@ -24,7 +24,8 @@ export default function EmailLoginForm() {
     const pathname = usePathname();
     const t = useTranslations('LoginForm');
 
-    const methodsPath = pathname.replace(/\/email\/?$/, '');
+    const currentPath = pathname ?? '/login/email';
+    const methodsPath = currentPath.replace(/\/email\/?$/, '');
     const methodsHref = `${methodsPath}?redirect_url=${encodeURIComponent(redirectUrl)}`;
 
     async function requestEmailCode() {

@@ -49,7 +49,8 @@ export default function LoginForm() {
 
     const googleHref = `/api/auth/google?redirect_url=${encodeURIComponent(redirectUrl)}`;
     const appleHref = `/api/auth/apple?redirect_url=${encodeURIComponent(redirectUrl)}`;
-    const normalizedPath = pathname.endsWith('/') ? pathname.slice(0, -1) : pathname;
+    const currentPath = pathname ?? '/login';
+    const normalizedPath = currentPath.endsWith('/') ? currentPath.slice(0, -1) : currentPath;
     const emailHref = `${normalizedPath}/email?redirect_url=${encodeURIComponent(redirectUrl)}`;
 
     return (
