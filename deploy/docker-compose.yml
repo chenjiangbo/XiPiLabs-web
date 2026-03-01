@@ -4,6 +4,7 @@ services:
     pull_policy: always
     container_name: xipilabs-web
     restart: unless-stopped
+    command: ["node_modules/.bin/next", "start", "-p", "3210"]
     ports:
       - "3210:3210"
     environment:
@@ -12,6 +13,17 @@ services:
       NODE_OPTIONS: --conditions=react-server
     env_file:
       - .env
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    read_only: true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,size=64m
+      - /app/.next/cache:rw,noexec,nosuid,size=128m
+    pids_limit: 256
+    mem_limit: 1500m
+    cpus: "1.0"
     networks:
       - xipi-network
 
