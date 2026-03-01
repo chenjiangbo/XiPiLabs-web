@@ -5,8 +5,8 @@ services:
     container_name: xipilabs-web
     restart: unless-stopped
     command: ["node_modules/.bin/next", "start", "-p", "3210"]
-    ports:
-      - "3210:3210"
+    expose:
+      - "3210"
     environment:
       NODE_ENV: production
       PORT: 3210
