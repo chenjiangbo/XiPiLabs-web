@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
-import { usePathname } from 'next/navigation';
 
 const GoogleIcon = () => (
     <svg viewBox="0 0 48 48" width="24" height="24">
@@ -34,15 +33,6 @@ const AppleIcon = () => (
     </svg>
 );
 
-const EmailIcon = () => (
-    <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-        <path
-            fill="currentColor"
-            d="M4 6h16a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2zm0 2v.45l8 5.1 8-5.1V8l-8 5.1L4 8z"
-        />
-    </svg>
-);
-
 function getInitialRedirect(): string {
     if (typeof window === 'undefined') {
         return '/';
@@ -54,13 +44,9 @@ function getInitialRedirect(): string {
 export default function LoginForm() {
     const [redirectUrl] = useState(getInitialRedirect);
     const t = useTranslations('LoginForm');
-    const pathname = usePathname();
 
     const googleHref = `/api/auth/google?redirect_url=${encodeURIComponent(redirectUrl)}`;
     const appleHref = `/api/auth/apple?redirect_url=${encodeURIComponent(redirectUrl)}`;
-    const currentPath = pathname ?? '/login';
-    const normalizedPath = currentPath.endsWith('/') ? currentPath.slice(0, -1) : currentPath;
-    const emailHref = `${normalizedPath}/email?redirect_url=${encodeURIComponent(redirectUrl)}`;
 
     return (
         <div className="login-container">
@@ -76,10 +62,6 @@ export default function LoginForm() {
                         <a href={appleHref} className="login-button login-button--option">
                             <AppleIcon />
                             <span>{t('login_with_apple')}</span>
-                        </a>
-                        <a href={emailHref} className="login-button login-button--option">
-                            <EmailIcon />
-                            <span>{t('login_with_email')}</span>
                         </a>
                     </div>
                 </div>
