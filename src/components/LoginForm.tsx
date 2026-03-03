@@ -33,6 +33,15 @@ const AppleIcon = () => (
     </svg>
 );
 
+const AlipayIcon = () => (
+    <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path
+            fill="currentColor"
+            d="M20.62 13.08c-1.7-.5-3.87-1.17-6.08-1.98.5-.95.95-1.95 1.28-2.87h3.2c.38 0 .69-.31.69-.69s-.31-.69-.69-.69h-2.76c.26-.98.42-1.84.42-2.42a.69.69 0 0 0-1.38 0c0 .44-.16 1.23-.43 2.42h-5.9c-.38 0-.69.31-.69.69s.31.69.69.69h5.48c-.34 1.04-.78 2.16-1.29 3.2-2.08-.84-3.96-1.78-5.23-2.8a.69.69 0 1 0-.87 1.06c1.3 1.06 3.2 2.03 5.32 2.9-1.78 2.95-4.18 5.47-6.7 6.78a.69.69 0 0 0 .63 1.22c2.87-1.48 5.54-4.31 7.47-7.49 2.27.85 4.53 1.56 6.27 2.08a.69.69 0 1 0 .39-1.32zM9.25 5.55a.69.69 0 1 0 .59-1.25 8.6 8.6 0 0 0-2.9-1.04.69.69 0 1 0-.14 1.37c.84.08 1.71.39 2.45.92z"
+        />
+    </svg>
+);
+
 function getInitialRedirect(): string {
     if (typeof window === 'undefined') {
         return '/';
@@ -47,6 +56,7 @@ export default function LoginForm() {
 
     const googleHref = `/api/auth/google?redirect_url=${encodeURIComponent(redirectUrl)}`;
     const appleHref = `/api/auth/apple?redirect_url=${encodeURIComponent(redirectUrl)}`;
+    const alipayHref = `/api/auth/alipay/url?redirect_url=${encodeURIComponent(redirectUrl)}`;
 
     return (
         <div className="login-container">
@@ -62,6 +72,15 @@ export default function LoginForm() {
                         <a href={appleHref} className="login-button login-button--option">
                             <AppleIcon />
                             <span>{t('login_with_apple')}</span>
+                        </a>
+                        <a
+                            href={alipayHref}
+                            className="login-button login-button--option"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            <AlipayIcon />
+                            <span>{t('login_with_alipay')}</span>
                         </a>
                     </div>
                 </div>

@@ -38,6 +38,7 @@
     "choose_login_method": "Choose your login method",
     "login_with_google": "Continue with Google",
     "login_with_apple": "Continue with Apple",
+    "login_with_alipay": "Continue with Alipay",
     "login_with_apple_coming_soon": "Apple Login (Coming Soon)"
   },
   "SupportPage": {

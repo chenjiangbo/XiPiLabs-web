@@ -78,6 +78,7 @@ jobs:
             
             # Escape multiline Apple private key into single-line with \n to fit .env format
             APPLE_PRIVATE_KEY_ESCAPED=$(printf '%s' "${{ secrets.APPLE_PRIVATE_KEY }}" | awk '{printf "%s\\n",$0}' | sed 's/\\n$//')
+            ALIPAY_PRIVATE_KEY_ESCAPED=$(printf '%s' "${{ secrets.ALIPAY_PRIVATE_KEY }}" | awk '{printf "%s\\n",$0}' | sed 's/\\n$//')
 
             # Recreate the .env file from individual secrets
             rm -f .env
@@ -98,6 +99,11 @@ jobs:
             echo "APPLE_KEY_ID=${{ secrets.APPLE_KEY_ID }}" >> .env
             echo "APPLE_PRIVATE_KEY=${APPLE_PRIVATE_KEY_ESCAPED}" >> .env
             echo "APPLE_REDIRECT_URI=${{ secrets.APPLE_REDIRECT_URI }}" >> .env
+            echo "ALIPAY_APP_ID=${{ secrets.ALIPAY_APP_ID }}" >> .env
+            echo "ALIPAY_PRIVATE_KEY=${ALIPAY_PRIVATE_KEY_ESCAPED}" >> .env
+            echo "ALIPAY_PUBLIC_KEY=${{ secrets.ALIPAY_PUBLIC_KEY }}" >> .env
+            echo "ALIPAY_CALLBACK_URL=${{ secrets.ALIPAY_CALLBACK_URL }}" >> .env
+            echo "ALIPAY_GATEWAY=${{ secrets.ALIPAY_GATEWAY }}" >> .env
             
             docker compose pull
             docker compose up -d --force-recreate --remove-orphans
