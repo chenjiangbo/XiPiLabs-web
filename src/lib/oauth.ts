@@ -9,6 +9,7 @@ const ALLOWED_HOSTS = new Set([
     'xipilabs.com',
     'www.xipilabs.com',
     'taleweave.xipilabs.com',
+    'professor.xipilabs.com',
 ]);
 const DEV_HOSTS = new Set(['localhost', '127.0.0.1']);
 const CUSTOM_SCHEMES = new Set(['taleweave-app']);
