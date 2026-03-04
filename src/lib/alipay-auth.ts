@@ -27,15 +27,48 @@ function getEnvVar(name: string): string {
     return value;
 }
 
-function normalizePemKey(raw: string): string {
-    return raw.replace(/\\n/g, '\n');
+function looksLikePem(raw: string): boolean {
+    return raw.includes('-----BEGIN') && raw.includes('-----END');
+}
+
+function toPemBody(raw: string): string {
+    return raw.replace(/\s+/g, '');
+}
+
+function wrapPem(body: string, begin: string, end: string): string {
+    const lines = body.match(/.{1,64}/g) ?? [];
+    return [begin, ...lines, end].join('\n');
+}
+
+function normalizePrivateKey(raw: string): string {
+    const normalized = raw.replace(/\\n/g, '\n').trim();
+    if (looksLikePem(normalized)) {
+        return normalized;
+    }
+    return wrapPem(
+        toPemBody(normalized),
+        '-----BEGIN PRIVATE KEY-----',
+        '-----END PRIVATE KEY-----'
+    );
+}
+
+function normalizePublicKey(raw: string): string {
+    const normalized = raw.replace(/\\n/g, '\n').trim();
+    if (looksLikePem(normalized)) {
+        return normalized;
+    }
+    return wrapPem(
+        toPemBody(normalized),
+        '-----BEGIN PUBLIC KEY-----',
+        '-----END PUBLIC KEY-----'
+    );
 }
 
 export function loadAlipayAuthConfig(): AlipayAuthConfig {
     return {
         appId: getEnvVar('ALIPAY_APP_ID'),
-        privateKey: normalizePemKey(getEnvVar('ALIPAY_PRIVATE_KEY')),
-        publicKey: normalizePemKey(getEnvVar('ALIPAY_PUBLIC_KEY')),
+        privateKey: normalizePrivateKey(getEnvVar('ALIPAY_PRIVATE_KEY')),
+        publicKey: normalizePublicKey(getEnvVar('ALIPAY_PUBLIC_KEY')),
         callbackUrl: getEnvVar('ALIPAY_CALLBACK_URL'),
         gateway: getEnvVar('ALIPAY_GATEWAY'),
     };
@@ -62,6 +95,7 @@ export function getAlipayClient(config: AlipayAuthConfig): AlipaySdk {
             privateKey: config.privateKey,
             alipayPublicKey: config.publicKey,
             gateway: config.gateway,
+            keyType: 'PKCS8',
         });
         cachedSignature = nextSignature;
     }
@@ -87,9 +121,11 @@ function ensureSuccessResult(result: Record<string, unknown>, method: string): v
     if (code === '10000') {
         return;
     }
-    const subCode = typeof result.sub_code === 'string' ? result.sub_code : 'unknown_sub_code';
-    const subMsg = typeof result.sub_msg === 'string' ? result.sub_msg : 'Unknown Alipay error';
-    throw new Error(`${method} failed: ${subCode} - ${subMsg}`);
+    const subCode = readString(result, 'sub_code', 'subCode') ?? 'unknown_sub_code';
+    const subMsg = readString(result, 'sub_msg', 'subMsg', 'msg') ?? 'Unknown Alipay error';
+    const message = `${method} failed: code=${code || 'unknown_code'}; sub_code=${subCode}; sub_msg=${subMsg}`;
+    console.error(`[Alipay API Error] ${message}`, result);
+    throw new Error(message);
 }
 
 function readString(result: Record<string, unknown>, ...keys: string[]): string | undefined {
