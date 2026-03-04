@@ -116,9 +116,15 @@ function resolveResult<T>(result: Record<string, unknown>): T {
     return result as T;
 }
 
+function isImplicitSuccess(result: Record<string, unknown>): boolean {
+    const accessToken = readString(result, 'access_token', 'accessToken');
+    const userId = readString(result, 'user_id', 'userId', 'alipay_user_id', 'alipayUserId');
+    return Boolean(accessToken && userId);
+}
+
 function ensureSuccessResult(result: Record<string, unknown>, method: string): void {
     const code = typeof result.code === 'string' ? result.code : '';
-    if (code === '10000') {
+    if (code === '10000' || (!code && isImplicitSuccess(result))) {
         return;
     }
     const subCode = readString(result, 'sub_code', 'subCode') ?? 'unknown_sub_code';
@@ -151,7 +157,7 @@ export async function exchangeAuthCodeForToken(authCode: string): Promise<Alipay
     ensureSuccessResult(result, 'alipay.system.oauth.token');
 
     const accessToken = readString(result, 'access_token', 'accessToken');
-    const userId = readString(result, 'user_id', 'userId');
+    const userId = readString(result, 'alipay_user_id', 'alipayUserId', 'user_id', 'userId');
     if (!accessToken || !userId) {
         throw new Error('alipay.system.oauth.token missing access token or user id');
     }

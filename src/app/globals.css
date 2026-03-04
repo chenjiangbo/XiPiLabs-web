@@ -1394,11 +1394,19 @@ main {
   cursor: not-allowed;
 }
 
-.login-button__icon-image {
+.login-button__icon {
   width: 24px;
   height: 24px;
-  object-fit: contain;
-  border-radius: 4px;
+  flex: 0 0 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-button__icon svg {
+  width: 24px;
+  height: 24px;
+  display: block;
 }
 
 .login-button--primary {

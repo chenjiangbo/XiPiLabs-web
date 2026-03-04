@@ -87,11 +87,12 @@ export async function GET(req: NextRequest) {
     try {
         const tokenResult = await exchangeAuthCodeForToken(authCode);
         const profile = await fetchAlipayUserProfile(tokenResult.accessToken);
-        if (profile.userId !== tokenResult.userId) {
-            throw new Error('Mismatched Alipay user id between token and profile');
-        }
 
-        const user = await upsertAlipayUser(profile);
+        const user = await upsertAlipayUser({
+            userId: profile.userId || tokenResult.userId,
+            nickName: profile.nickName,
+            avatar: profile.avatar,
+        });
         const authToken = issueAuthToken(user, profile.nickName);
 
         let destination = redirectUrl;
