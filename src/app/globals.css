@@ -1394,6 +1394,13 @@ main {
   cursor: not-allowed;
 }
 
+.login-button__icon-image {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  border-radius: 4px;
+}
+
 .login-button--primary {
   background: linear-gradient(135deg, #ffce54, #ffb02e);
   color: #111827;
