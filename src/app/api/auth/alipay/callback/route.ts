@@ -73,16 +73,25 @@ async function upsertAlipayUser(profile: UpsertAlipayUserInput): Promise<users> 
 export async function GET(req: NextRequest) {
     const authCode = req.nextUrl.searchParams.get('auth_code');
     const state = req.nextUrl.searchParams.get('state');
+    console.log('[Alipay Callback] incoming', {
+        state,
+        authCodePresent: Boolean(authCode),
+        ua: req.headers.get('user-agent') || '',
+        referer: req.headers.get('referer') || '',
+    });
+
     if (!authCode || !state) {
         return NextResponse.json({ error: 'Invalid callback payload' }, { status: 400 });
     }
 
     const session = await consumeOAuthState('alipay', state);
     if (!session) {
+        console.warn('[Alipay Callback] missing oauth state', { state });
         return NextResponse.json({ error: 'Invalid or expired state' }, { status: 400 });
     }
 
     const redirectUrl = session.redirectUrl || DEFAULT_REDIRECT_URL;
+    console.log('[Alipay Callback] resolved redirect', { state, redirectUrl });
 
     try {
         const tokenResult = await exchangeAuthCodeForToken(authCode);
@@ -108,6 +117,11 @@ export async function GET(req: NextRequest) {
         if (!isCustomSchemeUrl(redirectUrl)) {
             response.cookies.set('auth-token', authToken, buildCookieOptions());
         }
+        console.log('[Alipay Callback] success', {
+            state,
+            destination,
+            isCustomScheme: isCustomSchemeUrl(redirectUrl),
+        });
         return response;
     } catch (error) {
         console.error('[Alipay Callback Error]', error);

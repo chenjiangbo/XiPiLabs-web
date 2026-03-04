@@ -5,9 +5,18 @@ import { buildAlipayAuthorizeUrl, loadAlipayAuthConfig } from '@/lib/alipay-auth
 
 export async function GET(req: NextRequest) {
     try {
-        const redirectUrl = sanitizeRedirectUrl(req.nextUrl.searchParams.get('redirect_url'));
+        const rawRedirect = req.nextUrl.searchParams.get('redirect_url');
+        const redirectUrl = sanitizeRedirectUrl(rawRedirect);
         const state = randomBytes(16).toString('hex');
         const config = loadAlipayAuthConfig();
+
+        console.log('[Alipay Auth Start]', {
+            rawRedirect,
+            redirectUrl,
+            state,
+            ua: req.headers.get('user-agent') || '',
+            referer: req.headers.get('referer') || '',
+        });
 
         await storeOAuthState('alipay', state, { redirectUrl });
 

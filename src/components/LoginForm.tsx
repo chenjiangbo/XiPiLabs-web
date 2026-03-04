@@ -1,9 +1,7 @@
 "use client";
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
-
-const REDIRECT_STORAGE_KEY = 'xipi:sso:redirect_url';
 
 const GoogleIcon = () => (
     <svg viewBox="0 0 48 48" width="24" height="24" aria-hidden="true" focusable="false">
@@ -44,26 +42,15 @@ const AlipayIcon = () => (
     </svg>
 );
 
-function getInitialRedirect(): string {
-    if (typeof window === 'undefined') {
-        return '/';
-    }
-    const params = new URLSearchParams(window.location.search);
-    const fromQuery = params.get('redirect_url');
-    if (fromQuery) {
-        window.sessionStorage.setItem(REDIRECT_STORAGE_KEY, fromQuery);
-        return fromQuery;
-    }
-    const persisted = window.sessionStorage.getItem(REDIRECT_STORAGE_KEY);
-    if (persisted) {
-        return persisted;
-    }
-    return '/';
-}
-
 export default function LoginForm() {
-    const [redirectUrl] = useState(getInitialRedirect);
+    const [redirectUrl, setRedirectUrl] = useState('/');
     const t = useTranslations('LoginForm');
+
+    useEffect(() => {
+        const params = new URLSearchParams(window.location.search);
+        const fromQuery = params.get('redirect_url');
+        setRedirectUrl(fromQuery || '/');
+    }, []);
 
     const googleHref = `/api/auth/google?redirect_url=${encodeURIComponent(redirectUrl)}`;
     const appleHref = `/api/auth/apple?redirect_url=${encodeURIComponent(redirectUrl)}`;
