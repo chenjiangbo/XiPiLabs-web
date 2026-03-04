@@ -3,6 +3,8 @@
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 
+const REDIRECT_STORAGE_KEY = 'xipi:sso:redirect_url';
+
 const GoogleIcon = () => (
     <svg viewBox="0 0 48 48" width="24" height="24" aria-hidden="true" focusable="false">
         <path
@@ -47,7 +49,16 @@ function getInitialRedirect(): string {
         return '/';
     }
     const params = new URLSearchParams(window.location.search);
-    return params.get('redirect_url') || '/';
+    const fromQuery = params.get('redirect_url');
+    if (fromQuery) {
+        window.sessionStorage.setItem(REDIRECT_STORAGE_KEY, fromQuery);
+        return fromQuery;
+    }
+    const persisted = window.sessionStorage.getItem(REDIRECT_STORAGE_KEY);
+    if (persisted) {
+        return persisted;
+    }
+    return '/';
 }
 
 export default function LoginForm() {
@@ -76,8 +87,6 @@ export default function LoginForm() {
                         <a
                             href={alipayHref}
                             className="login-button login-button--option"
-                            target="_blank"
-                            rel="noopener noreferrer"
                         >
                             <span className="login-button__icon"><AlipayIcon /></span>
                             <span>{t('login_with_alipay')}</span>
